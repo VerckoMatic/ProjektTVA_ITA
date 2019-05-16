@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "89043550113",
+    "firebase_url": "https://projekttva.firebaseio.com",
+    "project_id": "projekttva",
+    "storage_bucket": "projekttva.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89043550113:android:60596ba86d9c00a7",
+        "android_client_info": {
+          "package_name": "com.example.matic.projekttva"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "89043550113-tah1egva5ehqlqdmti45ie3q7c84acp7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.matic.projekttva",
+            "certificate_hash": "80c13315888c25701c7134a5200133e621fb1c96"
+          }
+        },
+        {
+          "client_id": "89043550113-cu151uev2pm3hao3sqf47455ncie016m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQ2rZWeRuonRchAXDP-Su9Z8vOmQQ2Blg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "89043550113-cu151uev2pm3hao3sqf47455ncie016m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
