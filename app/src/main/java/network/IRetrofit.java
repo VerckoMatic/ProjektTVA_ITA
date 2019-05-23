@@ -15,5 +15,6 @@ public interface IRetrofit {
     @POST("users/auth")
     Observable<Response> login(@Body User user);
 
-
+    @POST("users")
+    Observable<Response> register(@Body User user);
 }

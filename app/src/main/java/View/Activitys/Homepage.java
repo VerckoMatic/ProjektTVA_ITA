@@ -24,28 +24,18 @@ public class Homepage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        //initSharedPreferences();
+        initSharedPreferences();
 
         tw_out = (TextView) findViewById(R.id.tw_out);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        tw_out.setText(mEmail);
     }
 
-   /* private void initSharedPreferences() {
+   private void initSharedPreferences() {
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mToken = mSharedPreferences.getString(Constants.TOKEN,"");
         mEmail = mSharedPreferences.getString(Constants.EMAIL,"");
-        tw_out.setText(mEmail);
+
     }
 
     private void logout() {
@@ -56,5 +46,5 @@ public class Homepage extends AppCompatActivity {
         editor.apply();
         finish();
     }
-*/
+
 }

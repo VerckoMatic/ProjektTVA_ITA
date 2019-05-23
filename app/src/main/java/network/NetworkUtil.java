@@ -38,5 +38,15 @@ public class NetworkUtil {
                 .build().create(IRetrofit.class);
     }
 
+    public static IRetrofit getRetrofit(){
 
+        RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
+
+        return new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .addCallAdapterFactory(rxAdapter)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build().create(IRetrofit.class);
+
+    }
 }
