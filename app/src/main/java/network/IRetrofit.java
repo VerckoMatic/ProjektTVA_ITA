@@ -17,4 +17,10 @@ public interface IRetrofit {
 
     @POST("users")
     Observable<Response> register(@Body User user);
+
+    @POST("users/{email}/passwordInit")
+    Observable<Response> resetPasswordInit(@Path("email") String email);
+
+    @POST("users/{email}/passwordFinish")
+    Observable<Response> resetPasswordFinish(@Path("email") String email, @Body User user);
 }

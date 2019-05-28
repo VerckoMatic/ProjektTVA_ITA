@@ -48,6 +48,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mSubscriptions = new CompositeSubscription();
         initSharedPreferences();
+        checkIfLogined();
         toRegisterActivity = (TextView) findViewById(R.id.tw_register);
         toLostPassword = (TextView) findViewById(R.id.tw_lostPassword);
         et_email = (EditText) findViewById(R.id.et_email);
@@ -67,6 +68,14 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), Register.class);
+                startActivity(i);
+            }
+        });
+
+        toLostPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), ForgotPassword.class);
                 startActivity(i);
             }
         });
@@ -113,18 +122,27 @@ public class Login extends AppCompatActivity {
 
                 String errorBody = ((HttpException) error).response().errorBody().string();
                 Response response = gson.fromJson(errorBody,Response.class);
-                Toast.makeText(this, "Response error:" + response.getMessage(), 2);
+                Toast.makeText(this, "Response error:" + response.getMessage(), 2).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
 
-            Toast.makeText(this, "Network Error", 2);
+            Toast.makeText(this, "Network Error", 2).show();
         }
     }
 
     private void initSharedPreferences() {
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    }
+
+    private void checkIfLogined(){
+        String token = mSharedPreferences.getString(Constants.TOKEN,"");
+
+        if(!token.equals("") || token.equals(null)){
+            Intent i = new Intent(getApplicationContext(), Homepage.class);
+            startActivity(i);
+        }
     }
 }
