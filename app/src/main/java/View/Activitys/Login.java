@@ -25,6 +25,7 @@ import java.io.IOException;
 import Model.Classes.Response;
 import Model.Classes.User;
 import network.NetworkUtil;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -88,6 +89,9 @@ public class Login extends AppCompatActivity {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         mSubscriptions.add(NetworkUtil.getRetrofit(email, password).login(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

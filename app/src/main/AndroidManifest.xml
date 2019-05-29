@@ -3,6 +3,15 @@
     package="com.example.matic.projekttva">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -23,7 +32,8 @@
             android:name="View.Activitys.Homepage"
             android:label="@string/title_activity_homepage"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="View.Activitys.ForgotPassword"></activity>
+        <activity android:name="View.Activitys.ForgotPassword" />
+        <activity android:name="View.Activitys.CreateItem" />
     </application>
 
 </manifest>

@@ -7,21 +7,19 @@ public class Item {
     public Shipping shipping;
     public String description;
     public String images;
-    public String pickupLocation;
 
 
     public Item(){
 
     }
 
-    public Item(String title, String platform, double price, Shipping shipping, String description, String images, String pickupLocation) {
+    public Item(String title, String platform, double price, Shipping shipping, String description, String images) {
         this.title = title;
         this.platform = platform;
         this.price = price;
         this.shipping = shipping;
         this.description = description;
         this.images = images;
-        this.pickupLocation = pickupLocation;
     }
 
     public String getTitle() {
@@ -72,11 +70,4 @@ public class Item {
         this.images = images;
     }
 
-    public String getPickupLocation() {
-        return pickupLocation;
-    }
-
-    public void setPickupLocation(String pickupLocation) {
-        this.pickupLocation = pickupLocation;
-    }
 }

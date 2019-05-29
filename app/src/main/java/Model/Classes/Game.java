@@ -12,8 +12,8 @@ public class Game extends Item{
         this.psPlus = psPlus;
     }
 
-    public Game(String title, String platform, double price, Shipping shipping, String description, String images, String pickupLocation, Boolean psPlus) {
-        super(title, platform, price, shipping, description, images, pickupLocation);
+    public Game(String title, String platform, double price, Shipping shipping, String description, String images, Boolean psPlus) {
+        super(title, platform, price, shipping, description, images);
         this.psPlus = psPlus;
     }
 
