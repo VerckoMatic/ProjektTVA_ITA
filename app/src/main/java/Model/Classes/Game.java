@@ -2,26 +2,27 @@ package Model.Classes;
 
 public class Game extends Item{
 
-    public Boolean psPlus;
+    public String subscription;
 
 
     public Game(){
 
     }
-    public Game(Boolean psPlus) {
-        this.psPlus = psPlus;
+
+    public Game(String subsrciption) {
+        this.subscription = subsrciption;
     }
 
-    public Game(String title, String platform, double price, Shipping shipping, String description, String images, Boolean psPlus) {
-        super(title, platform, price, shipping, description, images);
-        this.psPlus = psPlus;
+    public Game(String title, String type, String platform, double price, Shipping shipping, String description, String images, String subsrciption) {
+        super(title, type, platform, price, shipping, description, images);
+        this.subscription = subsrciption;
     }
 
-    public Boolean getPsPlus() {
-        return psPlus;
+    public String getSubscription() {
+        return subscription;
     }
 
-    public void setPsPlus(Boolean psPlus) {
-        this.psPlus = psPlus;
+    public void setSubscription(String subscription) {
+        this.subscription = subscription;
     }
 }

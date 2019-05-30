@@ -56,14 +56,10 @@ import utils.Constants;
 public class HomeFragment extends Fragment {
     private String mToken;
     private String mEmail;
-    Button btn_logout;
     Button btn_createItem;
-    Button btn_image;
     TextView tw_out;
-    ImageView img_choose;
     Bitmap bitmap;
     AlertDialog alertDialogWithRadioButtons;
-    String selectedImagePath;
     String selected;
     private CompositeSubscription mSubscriptions;
     private SharedPreferences mSharedPreferences;
@@ -74,21 +70,11 @@ public class HomeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         tw_out = (TextView) rootView.findViewById(R.id.tw_out);
-        btn_logout = (Button) rootView.findViewById(R.id.btn_logout);
-        btn_image = (Button) rootView.findViewById(R.id.btn_image);
         btn_createItem = (Button) rootView.findViewById(R.id.btn_createItem);
         tw_out.setText(mEmail);
-        img_choose = (ImageView) rootView.findViewById(R.id.img_choose);
         mSubscriptions = new CompositeSubscription();
         initSharedPreferences();
-        btn_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // showCameraDialog();
-                //showGalleryDialog();
-                showPictureDialog();
-            }
-        });
+
 
         applicationContext.getContentResolver();
 
@@ -173,99 +159,6 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
-    private void showPictureDialog(){
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(getActivity());
-        pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {
-                "Select photo from gallery",
-                "Capture photo from camera" };
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                choosePhotoFromGallary();
-                                break;
-                            case 1:
-                                takePhotoFromCamera();
-                                break;
-                        }
-                    }
-                });
-        pictureDialog.show();
-    }
-
-    public void choosePhotoFromGallary() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-        startActivityForResult(galleryIntent, 0);
-    }
-
-    private void takePhotoFromCamera() {
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 1);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 0) {
-            if (data != null) {
-                Uri contentURI = data.getData();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(applicationContext.getContentResolver(), contentURI);
-                    String path = saveImage(bitmap);
-                    Toast.makeText(applicationContext, "Image Saved!", Toast.LENGTH_SHORT).show();
-                    img_choose.setImageBitmap(bitmap);
-                    multipartImageUpload(bitmap);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(applicationContext, "Failed!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        } else if (requestCode == 1) {
-            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            img_choose.setImageBitmap(thumbnail);
-            saveImage(thumbnail);
-            Toast.makeText(applicationContext, "Image Saved!", Toast.LENGTH_SHORT).show();
-            multipartImageUpload(thumbnail);
-        }
-    }
-
-    public String saveImage(Bitmap myBitmap) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File wallpaperDirectory = new File(
-                Environment.getExternalStorageDirectory() + "/demo");
-        // have the object build the directory structure, if needed.
-        if (!wallpaperDirectory.exists()) {
-            wallpaperDirectory.mkdirs();
-        }
-
-        try {
-            File f = new File(wallpaperDirectory, Calendar.getInstance()
-                    .getTimeInMillis() + ".jpg");
-            f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(applicationContext,
-                    new String[]{f.getPath()},
-                    new String[]{"image/jpeg"}, null);
-            fo.close();
-            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
-
-            return f.getAbsolutePath();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return "";
-    }
 
     private void initSharedPreferences() {
 
@@ -275,44 +168,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void multipartImageUpload(Bitmap mBitmap) {
-        try {
-            File filesDir = applicationContext.getFilesDir();
-            File file = new File(filesDir, "image" + ".png");
 
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            mBitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
-            byte[] bitmapdata = bos.toByteArray();
-
-
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(bitmapdata);
-            fos.flush();
-            fos.close();
-
-
-            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
-            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "file");
-
-            mSubscriptions.add(NetworkUtil.getRetrofit().postImage(body, name)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(this::handlePostImage,this::handlePostImageError));
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void handlePostImage(Response response) {
-
-        Toast.makeText(applicationContext, response.getMessage(), Toast.LENGTH_LONG ).show();
-        tw_out.setText(response.getMessage().toString());
-    }
 
     private void createItem(Item item){
         mSubscriptions.add(NetworkUtil.getRetrofit().createItem(item)
@@ -348,25 +204,5 @@ public class HomeFragment extends Fragment {
     }
 
 
-
-    private void handlePostImageError(Throwable error) {
-
-        if (error instanceof HttpException) {
-
-            Gson gson = new GsonBuilder().create();
-
-            try {
-
-                String errorBody = ((HttpException) error).response().errorBody().string();
-                Response response = gson.fromJson(errorBody,Response.class);
-                Toast.makeText(applicationContext, response.getMessage(), Toast.LENGTH_LONG ).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-
-            Toast.makeText(applicationContext, "Network Error", Toast.LENGTH_LONG ).show();
-        }
-    }
 
 }

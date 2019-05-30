@@ -12,9 +12,9 @@ public class Accessories extends Item {
         this.accessorieType = itemType;
     }
 
-    public Accessories(String title, String platform, double price, Shipping shipping, String description, String images, String itemType) {
-        super(title, platform, price, shipping, description, images);
-        this.accessorieType = itemType;
+    public Accessories(String title, String type, String platform, double price, Shipping shipping, String description, String images, String accessorieType) {
+        super(title, type, platform, price, shipping, description, images);
+        this.accessorieType = accessorieType;
     }
 
     public String getAccessorieType() {

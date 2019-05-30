@@ -2,6 +2,7 @@ package Model.Classes;
 
 public class Item {
     public String title;
+    public String type;
     public String platform;
     public double price;
     public Shipping shipping;
@@ -13,13 +14,22 @@ public class Item {
 
     }
 
-    public Item(String title, String platform, double price, Shipping shipping, String description, String images) {
+    public Item(String title, String type, String platform, double price, Shipping shipping, String description, String images) {
         this.title = title;
+        this.type = type;
         this.platform = platform;
         this.price = price;
         this.shipping = shipping;
         this.description = description;
         this.images = images;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getTitle() {

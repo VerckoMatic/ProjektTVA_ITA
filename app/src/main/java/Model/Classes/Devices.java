@@ -12,8 +12,8 @@ public class Devices extends Item{
         this.warranty = warranty;
     }
 
-    public Devices(String title, String platform, double price, Shipping shipping, String description, String images, boolean warranty) {
-        super(title, platform, price, shipping, description, images);
+    public Devices(String title, String type, String platform, double price, Shipping shipping, String description, String images, boolean warranty) {
+        super(title, type, platform, price, shipping, description, images);
         this.warranty = warranty;
     }
 

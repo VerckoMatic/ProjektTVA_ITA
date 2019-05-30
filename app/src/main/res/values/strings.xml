@@ -9,6 +9,22 @@
         <item>Naprava</item>
         <item>Dodatek</item>
     </string-array>
+    <string-array name="sp_platformStrings">
+        <item>Playstation</item>
+        <item>Xbox</item>
+        <item>Nintendo</item>
+        <item>PC</item>
+        <item>Drugo</item>
+    </string-array>
+    <string-array name="sp_subscriptionStrings">
+        <item>Da</item>
+        <item>Ne</item>
+    </string-array>
+    <string-array name="sp_shippyngTypeStrings">
+        <item>Osebni prevzem</item>
+        <item>Pošta</item>
+        <item>Po dogovoru</item>
+    </string-array>
     <string name="title_activity_tab">TabActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>

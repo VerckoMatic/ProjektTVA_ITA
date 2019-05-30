@@ -1,5 +1,6 @@
 package network;
 
+import Model.Classes.Game;
 import Model.Classes.Item;
 import Model.Classes.Response;
 import Model.Classes.User;
@@ -32,7 +33,12 @@ public interface IRetrofit {
     @POST("items")
     Observable<Response> createItem(@Body Item item);
 
+    @POST("items")
+    Observable<Response> createGame(@Body Game game);
+
     @Multipart
     @POST("/items/upload")
     Observable<Response> postImage(@Part MultipartBody.Part image, @Part("file") RequestBody name);
+
+
 }
