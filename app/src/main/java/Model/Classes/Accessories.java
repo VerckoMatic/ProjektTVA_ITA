@@ -1,27 +1,29 @@
 package Model.Classes;
 
+import java.util.List;
+
 public class Accessories extends Item {
 
-    public String accessorieType;
+    public String itemType;
 
     public Accessories(){
 
     }
 
     public Accessories(String itemType) {
-        this.accessorieType = itemType;
+        this.itemType = itemType;
     }
 
-    public Accessories(String title, String type, String platform, double price, Shipping shipping, String description, String images, String accessorieType) {
-        super(title, type, platform, price, shipping, description, images);
-        this.accessorieType = accessorieType;
+    public Accessories(String title, String type, String platform, double price, Shipping shipping, String description, String images, int user_idUser, List<Category> category, String accessorieType) {
+        super(title, type, platform, price, shipping, description, images, user_idUser, category);
+        this.itemType = accessorieType;
     }
 
-    public String getAccessorieType() {
-        return accessorieType;
+    public String getItemType() {
+        return itemType;
     }
 
-    public void setAccessorieType(String accessorieType) {
-        this.accessorieType = accessorieType;
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
     }
 }

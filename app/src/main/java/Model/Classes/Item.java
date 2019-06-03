@@ -1,5 +1,7 @@
 package Model.Classes;
 
+import java.util.List;
+
 public class Item {
     public String title;
     public String type;
@@ -8,13 +10,16 @@ public class Item {
     public Shipping shipping;
     public String description;
     public String images;
+    public int User_idUser;
+    public List<Category> category;
+    //dodaj kategorijo
 
 
     public Item(){
 
     }
 
-    public Item(String title, String type, String platform, double price, Shipping shipping, String description, String images) {
+    public Item(String title, String type, String platform, double price, Shipping shipping, String description, String images, int user_idUser, List<Category> category) {
         this.title = title;
         this.type = type;
         this.platform = platform;
@@ -22,6 +27,24 @@ public class Item {
         this.shipping = shipping;
         this.description = description;
         this.images = images;
+        User_idUser = user_idUser;
+        this.category = category;
+    }
+
+    public List<Category> getCategory() {
+        return category;
+    }
+
+    public void setCategory(List<Category> category) {
+        this.category = category;
+    }
+
+    public int getUser_idUser() {
+        return User_idUser;
+    }
+
+    public void setUser_idUser(int user_idUser) {
+        User_idUser = user_idUser;
     }
 
     public String getType() {

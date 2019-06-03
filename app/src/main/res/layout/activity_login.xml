@@ -16,6 +16,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="Email"
+        android:maxLength="50"
         app:layout_constraintBottom_toTopOf="@+id/et_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +30,7 @@
         android:ems="10"
         android:inputType="textPassword"
         android:hint="Geslo"
+        android:maxLength="50"
         app:layout_constraintBottom_toTopOf="@+id/button_login"
         app:layout_constraintStart_toStartOf="@+id/et_email"
         app:layout_constraintTop_toBottomOf="@+id/et_email" />
@@ -49,6 +51,8 @@
         android:layout_width="340dp"
         android:layout_height="0dp"
         android:layout_gravity="center"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="22dp"
         android:layout_marginBottom="3dp"
         android:clickable="true"
         android:gravity="center"
@@ -60,8 +64,8 @@
         android:textColorLink="@color/colorPrimary"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/tw_lostPassword"
-        app:layout_constraintEnd_toEndOf="@+id/tw_lostPassword"
-        app:layout_constraintStart_toStartOf="@+id/tw_lostPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
     <TextView
@@ -69,7 +73,8 @@
         android:layout_width="244dp"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_marginEnd="68dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="70dp"
         android:layout_marginBottom="52dp"
         android:clickable="true"
         android:gravity="center"
@@ -82,5 +87,6 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tw_register" />
 </android.support.constraint.ConstraintLayout>

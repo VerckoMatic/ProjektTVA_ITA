@@ -1,5 +1,7 @@
 package network;
 
+import Model.Classes.Accessories;
+import Model.Classes.Devices;
 import Model.Classes.Game;
 import Model.Classes.Item;
 import Model.Classes.Response;
@@ -33,8 +35,14 @@ public interface IRetrofit {
     @POST("items")
     Observable<Response> createItem(@Body Item item);
 
-    @POST("items")
+    @POST("items/game")
     Observable<Response> createGame(@Body Game game);
+
+    @POST("items/game")
+    Observable<Response> createDevices(@Body Devices devices);
+
+    @POST("items/game")
+    Observable<Response> createAccessories(@Body Accessories accessories);
 
     @Multipart
     @POST("/items/upload")

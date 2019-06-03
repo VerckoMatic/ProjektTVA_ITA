@@ -49,12 +49,23 @@ public class Register extends AppCompatActivity {
                 user.setFullName(name.getText().toString());
                 user.setEmail(email.getText().toString());
                 user.setPassword(password.getText().toString());
-                registerUser(user);
 
-                //CRUDoperations.registerUser(this, user );
-                if(UserValidation.validateRegistrationConfirmPassword(confirmPassword.getText().toString()) && UserValidation.validateRegistrationEmail(user.getEmail()) &&
+                if(UserValidation.validateRegistrationConfirmPassword(confirmPassword.getText().toString(),password.getText().toString()) && UserValidation.validateRegistrationEmail(user.getEmail()) &&
                 UserValidation.validateRegistrationName(user.getFullName()) && UserValidation.validateRegistrationPassword(user.getPassword())){
-
+                    registerUser(user);
+                }else{
+                    if(!UserValidation.validateRegistrationConfirmPassword(confirmPassword.getText().toString(),password.getText().toString())){
+                        confirmPassword.setError("Vpišite geslo, pazite da se ujema z prej vpisanim geslom!");
+                    }
+                    if(!UserValidation.validateRegistrationEmail(user.getEmail())){
+                        email.setError("Vpišite veljaven email račun!");
+                    }
+                    if(!UserValidation.validateRegistrationName(user.getFullName())){
+                        name.setError("Vpišite vaš ime in priimek!");
+                    }
+                    if(!UserValidation.validateRegistrationPassword(user.getPassword())){
+                        password.setError("Vpišite vaše geslo. Najmanj 5 znakov!");
+                    }
                 }
                 }
         });

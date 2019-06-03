@@ -20,6 +20,10 @@
         <item>Da</item>
         <item>Ne</item>
     </string-array>
+    <string-array name="sp_warrantyStrings">
+        <item>Da</item>
+        <item>Ne</item>
+    </string-array>
     <string-array name="sp_shippyngTypeStrings">
         <item>Osebni prevzem</item>
         <item>Pošta</item>

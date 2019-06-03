@@ -3,11 +3,13 @@ package View.Activitys.Fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,8 +35,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
+import Model.Classes.Accessories;
+import Model.Classes.Category;
+import Model.Classes.Devices;
 import Model.Classes.Game;
 import Model.Classes.Item;
 import Model.Classes.Response;
@@ -48,12 +55,15 @@ import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+import Model.ItemValidation;
+import utils.Constants;
 
 public class AddItemBasicInfo extends Fragment {
 
     ImageView img_choose;
     Button btn_image;
     EditText et_pickupLocation;
+    EditText et_category;
     EditText et_price;
     Spinner sp_shippingType;
     Button btn_next;
@@ -61,13 +71,16 @@ public class AddItemBasicInfo extends Fragment {
     public String imageServerLocation;
     private CompositeSubscription mSubscriptions;
     private CompositeSubscription mSubscriptionsGame;
+    private SharedPreferences mSharedPreferences;
 
     String TITLE;
     String DESCRIPTION;
     String PLATFORM;
-    String SUBSCRIPTION;
+    String ITEMTYPE;
+    int SUBSCRIPTION;
+    int WARRANTY;
     String TYPE;
-
+    List<Category> categoryList = new ArrayList<>();
     Bitmap thumbnail;
     @Nullable
     @Override
@@ -80,22 +93,27 @@ public class AddItemBasicInfo extends Fragment {
             TITLE = getArguments().getString("TITLE");
             DESCRIPTION = getArguments().getString("DESCRIPTION");
             PLATFORM = getArguments().getString("PLATFORM");
-            SUBSCRIPTION = getArguments().getString("SUBSCRIPTION");
+            WARRANTY = getArguments().getInt("WARRANTY");
+            SUBSCRIPTION = getArguments().getInt("SUBSCRIPTION");
+            ITEMTYPE = getArguments().getString("ITEMTYPE");
             TYPE = getArguments().getString("TYPE");
             /*Snackbar.make(getActivity().findViewById(android.R.id.content), TITLE, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();*/
         }
-
+        initSharedPreferences();
         img_choose = (ImageView) rootView.findViewById(R.id.img_choose);
         btn_image = (Button) rootView.findViewById(R.id.btn_image);
         btn_next = (Button) rootView.findViewById(R.id.btn_next);
         et_pickupLocation = (EditText) rootView.findViewById(R.id.et_location);
         et_price = (EditText) rootView.findViewById(R.id.et_price);
+        et_category = (EditText) rootView.findViewById(R.id.et_category);
         sp_shippingType = (Spinner) rootView.findViewById(R.id.sp_shippingType);
 
         mSubscriptions = new CompositeSubscription();
         mSubscriptionsGame = new CompositeSubscription();
         applicationContext.getContentResolver();
+
+        et_category.setText("");
 
         String[] sp_shippingTypeArray = getResources().getStringArray(R.array.sp_shippyngTypeStrings);
         ArrayAdapter<String> adapterPlatform =new ArrayAdapter<String>(getActivity(),R.layout.spinner_layout,R.id.text, sp_shippingTypeArray);
@@ -114,38 +132,145 @@ public class AddItemBasicInfo extends Fragment {
             @Override
             public void onClick(View v) {
 
-                double price = Double.parseDouble(et_price.getText().toString());
-                String sp_shippingTypeString = sp_shippingType.getSelectedItem().toString();
-                //imageServerLocation;
-                Shipping shipping = new Shipping();
-                shipping.setShippingType(sp_shippingTypeString);
-                shipping.setPickUpLocation(et_pickupLocation.getText().toString());
-                Game game = new Game();
-                game.setTitle(TITLE);
-                game.setType(TYPE);
-                game.setPlatform(PLATFORM);
-                game.setPrice(price);
-                game.setShipping(shipping);
-                game.setImages(imageServerLocation);
+                String priceString = et_price.getText().toString();
+                String locationString = et_pickupLocation.getText().toString();
+                if(!ItemValidation.validatePriceBasicFragment(priceString) || !ItemValidation.validateLocationBasicFragment(locationString)){
+                    if(!ItemValidation.validatePriceBasicFragment(priceString)){
+                        et_price.setError("Prosim vnesite ceno, dovoljen je decimalni številski vnos.");
+                    }
+                    if(!ItemValidation.validateLocationBasicFragment(locationString)) {
+                        et_pickupLocation.setError("Prosim vnesite vašo lokacijo/regijo.");
+                    }
+                }else{
 
-                game.setSubscription(SUBSCRIPTION);
+                    if(TYPE.equals("Game")){
+                        typeIsGame();
+                    }else if(TYPE.equals("Devices")){
+                        typeIsDevice();
+                    }else if(TYPE.equals("Accessories")){
+                        typeIsAccessories();
+                    }
 
-                createGame(game);
+                }
+
             }
         });
 
+        et_category.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                categoryCheckboxDialog();
+            }
+        });
 
         return rootView;
     }
 
-    //mSubscriptions
+    //Create
+    private void typeIsGame(){
+        String priceString = et_price.getText().toString();
+        double price = Double.parseDouble(priceString);
+        String sp_shippingTypeString = sp_shippingType.getSelectedItem().toString();
+        Shipping shipping = new Shipping();
+        shipping.setShippingType(sp_shippingTypeString);
+        shipping.setPickUpLocation(et_pickupLocation.getText().toString());
+        String idUserString = mSharedPreferences.getString(Constants.IDUSER,"");
+        int idUser = Integer.parseInt(idUserString);
+        Game game = new Game();
+        game.setTitle(TITLE);
+        game.setType(TYPE);
+        game.setPlatform(PLATFORM);
+        game.setDescription(DESCRIPTION);
+        game.setPrice(price);
+        game.setShipping(shipping);
+        game.setImages(imageServerLocation);
+        game.setUser_idUser(idUser);
+        game.setSubscription(SUBSCRIPTION);
+        if(categoryList != null){
+            game.setCategory(categoryList);
+        }
+        createGame(game);
+    }
 
+    private void typeIsAccessories(){
+        String priceString = et_price.getText().toString();
+        double price = Double.parseDouble(priceString);
+
+        String sp_shippingTypeString = sp_shippingType.getSelectedItem().toString();
+        Shipping shipping = new Shipping();
+        shipping.setShippingType(sp_shippingTypeString);
+        shipping.setPickUpLocation(et_pickupLocation.getText().toString());
+
+        String idUserString = mSharedPreferences.getString(Constants.IDUSER,"");
+        int idUser = Integer.parseInt(idUserString);
+
+        Accessories accessories = new Accessories();
+        accessories.setTitle(TITLE);
+        accessories.setType(TYPE);
+        accessories.setPlatform(PLATFORM);
+        accessories.setDescription(DESCRIPTION);
+        accessories.setPrice(price);
+        accessories.setShipping(shipping);
+        accessories.setImages(imageServerLocation);
+        accessories.setUser_idUser(idUser);
+        accessories.setItemType(ITEMTYPE);
+        if(categoryList != null){
+            accessories.setCategory(categoryList);
+        }
+        createAccessories(accessories);
+    }
+
+    private void typeIsDevice(){
+        String priceString = et_price.getText().toString();
+        double price = Double.parseDouble(priceString);
+
+        String sp_shippingTypeString = sp_shippingType.getSelectedItem().toString();
+        Shipping shipping = new Shipping();
+        shipping.setShippingType(sp_shippingTypeString);
+        shipping.setPickUpLocation(et_pickupLocation.getText().toString());
+
+        String idUserString = mSharedPreferences.getString(Constants.IDUSER,"");
+        int idUser = Integer.parseInt(idUserString);
+
+        Devices devices = new Devices();
+        devices.setTitle(TITLE);
+        devices.setType(TYPE);
+        devices.setPlatform(PLATFORM);
+        devices.setDescription(DESCRIPTION);
+        devices.setPrice(price);
+        devices.setShipping(shipping);
+        devices.setImages(imageServerLocation);
+        devices.setUser_idUser(idUser);
+        devices.setWarranty(WARRANTY);
+        if(categoryList != null){
+            devices.setCategory(categoryList);
+        }
+        createDevice(devices);
+    }
+
+    //mSubscriptions
     private void createGame(Game game){
         mSubscriptionsGame.add(NetworkUtil.getRetrofit().createGame(game)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,this::handleError));
     }
+
+    private void createDevice(Devices devices){
+        mSubscriptionsGame.add(NetworkUtil.getRetrofit().createDevices(devices)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse,this::handleError));
+    }
+
+    private void createAccessories(Accessories accessories){
+        mSubscriptionsGame.add(NetworkUtil.getRetrofit().createAccessories(accessories)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse,this::handleError));
+    }
+
+    //mSubscription handlers
     private void handleResponse(Response response) {
 
         Toast.makeText(applicationContext, response.getMessage(), Toast.LENGTH_LONG ).show();
@@ -172,7 +297,7 @@ public class AddItemBasicInfo extends Fragment {
             Toast.makeText(applicationContext, "Network Error", Toast.LENGTH_LONG ).show();
         }
     }
-//picture
+//upload picture
     private void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(getActivity());
         pictureDialog.setTitle("Select Action");
@@ -325,5 +450,61 @@ public class AddItemBasicInfo extends Fragment {
 
             Toast.makeText(applicationContext, "Network Error", Toast.LENGTH_LONG ).show();
         }
+    }
+
+    public void categoryCheckboxDialog(){
+        categoryList.clear();
+        String [] items = {"FPS", "MMORPG", "RPG", "Simulacije", "Avanturistične", "RTS", "Miselne",
+                "Akcijske", "Športne", "Izobraževalne", "Arkadne", "Avto-moto", "Strategijske", "CO-OP", "Naprave", "Dodatki"};
+        final boolean[] checkedColors = new boolean[]{
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+        };
+        List<Integer> selectedItems = new ArrayList<>();
+
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMultiChoiceItems(items,checkedColors, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
+                if (isChecked) {
+                    selectedItems.add(indexSelected);
+                }
+                else if (selectedItems.contains(indexSelected)) {
+                    selectedItems.remove(Integer.valueOf(indexSelected));
+                }
+            }
+        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                String out = "";
+                for(int i = 0; i < selectedItems.size(); i++){
+                    Category category = new Category();
+                    category.setName(items[selectedItems.get(i)]);
+                    categoryList.add(category);
+                    if(i == 0){
+                        out += " " +items[selectedItems.get(i)].toString();
+                    }else{
+                        out += ", " +items[selectedItems.get(i)].toString();
+                    }
+
+                }
+                et_category.setText(out);
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+
+                return;
+            }
+        });
+        AlertDialog dialog = builder.create();
+        // Display the alert dialog on interface
+        dialog.show();
+    }
+
+    private void initSharedPreferences() {
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,6 +32,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import utils.Constants;
+import Model.UserValidation;
 
 public class Login extends AppCompatActivity {
 
@@ -59,9 +61,20 @@ public class Login extends AppCompatActivity {
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
-                et_email.getText().clear();
-                et_password.getText().clear();
+                String emailStr = et_email.getText().toString();
+                String passwordStr = et_password.getText().toString();
+                if(!UserValidation.validateLoginEmail(emailStr) || !UserValidation.validateLoginPassword(passwordStr)){
+                    if(!UserValidation.validateLoginEmail(emailStr)){
+                        et_email.setError("Vpišite email račun!");
+                    }else if(!UserValidation.validateLoginPassword(passwordStr)){
+                        et_password.setError("Vpišite geslo!");
+                    }
+                }else{
+                    login();
+                    et_email.getText().clear();
+                    et_password.getText().clear();
+                }
+
             }
         });
 
@@ -104,6 +117,7 @@ public class Login extends AppCompatActivity {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(Constants.TOKEN,response.getToken());
         editor.putString(Constants.EMAIL,response.getMessage());
+        editor.putString(Constants.IDUSER, response.getIdUser());
         editor.apply();
 
         et_email.setText(null);

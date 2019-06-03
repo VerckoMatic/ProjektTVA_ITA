@@ -14,7 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
+import Model.ItemValidation;
 import com.example.matic.projekttva.R;
 
 public class AddGameFragment extends Fragment {
@@ -30,7 +30,7 @@ public class AddGameFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_game, container, false);
 
-        et_title = (EditText) rootView.findViewById(R.id.et_location);
+        et_title = (EditText) rootView.findViewById(R.id.et_title);
         et_description = (EditText) rootView.findViewById(R.id.et_description);
         sp_platform = (Spinner) rootView.findViewById(R.id.sp_platform);
         sp_subscription = (Spinner) rootView.findViewById(R.id.sp_subscription);
@@ -55,22 +55,37 @@ public class AddGameFragment extends Fragment {
                 //String subscription = sp_platform.getText().toString();
                 String platformString = sp_platform.getSelectedItem().toString();
                 String subscriptionString = sp_subscription.getSelectedItem().toString();
-                Intent i = getActivity().getIntent();
-                String type = i.getExtras().getString("TYPE");
-                AddItemBasicInfo fragment2 = new AddItemBasicInfo();
-                Bundle bundle = new Bundle();
-                bundle.putString("TITLE", title);
-                bundle.putString("DESCRIPTION", description);
-                bundle.putString("PLATFORM", platformString);
-                bundle.putString("SUBSCRIPTION", subscriptionString);
-                bundle.putString("TYPE", type);
-                fragment2.setArguments(bundle);
-                FragmentManager fragmentManager2 = getFragmentManager();
-                FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
-                fragmentTransaction2.addToBackStack("xyz");
-                fragmentTransaction2.hide(AddGameFragment.this);
-                fragmentTransaction2.add(android.R.id.content, fragment2);
-                fragmentTransaction2.commit();
+                int sub;
+                if(subscriptionString.equals("Da")){
+                    sub = 1;
+                }else{
+                    sub = 0;
+                }
+                if(!ItemValidation.validateDescriptionCreateItemFragments(description) || !ItemValidation.validateTitleCreateItemFragments(title)){
+                    if(!ItemValidation.validateDescriptionCreateItemFragments(description)){
+                        et_description.setError( "Vpišite opis, vpišete lahko do 250 znakov!" );
+                    }
+                    if(!ItemValidation.validateTitleCreateItemFragments(title)){
+                        et_title.setError( "Vpišite naslov, vpišete lahko do 40 znakov!" );
+                    }
+                }else{
+                    Intent i = getActivity().getIntent();
+                    String type = i.getExtras().getString("TYPE");
+                    AddItemBasicInfo fragment2 = new AddItemBasicInfo();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("TITLE", title);
+                    bundle.putString("DESCRIPTION", description);
+                    bundle.putString("PLATFORM", platformString);
+                    bundle.putInt("SUBSCRIPTION", sub);
+                    bundle.putString("TYPE", type);
+                    fragment2.setArguments(bundle);
+                    FragmentManager fragmentManager2 = getFragmentManager();
+                    FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
+                    fragmentTransaction2.addToBackStack("xyz");
+                    fragmentTransaction2.hide(AddGameFragment.this);
+                    fragmentTransaction2.add(android.R.id.content, fragment2);
+                    fragmentTransaction2.commit();
+                }
             }
         });
 
