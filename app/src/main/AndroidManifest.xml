@@ -34,6 +34,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name="View.Activitys.ForgotPassword" />
         <activity android:name="View.Activitys.CreateItem" />
+        <activity android:name="View.Activitys.ShowSelectedItem"></activity>
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -59,5 +60,30 @@ public class NetworkUtil {
                 .client(httpClient)
                 .build().create(IRetrofit.class);
 
+    }
+
+    public static IRetrofit getRetrofit(Converter.Factory converterFactory)
+    {
+
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient httpClient = new OkHttpClient.Builder().addInterceptor(interceptor).build();;
+
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
+
+        retrofitBuilder.baseUrl(Constants.BASE_URL);
+        retrofitBuilder.client(httpClient);
+        /* The converter factory can be GsonConverterFactory( Convert response text to json object. ),
+           if the value is null then convert response text okhttp3.ResponseBody. */
+        if(converterFactory != null ) {
+            retrofitBuilder.addConverterFactory(converterFactory);
+        }
+
+        // Build the retrofit object.
+        Retrofit retrofit = retrofitBuilder.build();
+
+        //Create instance for user manager interface and return it.
+        IRetrofit retrofitService = retrofit.create(IRetrofit.class);
+        return retrofitService;
     }
 }

@@ -1,13 +1,18 @@
 package network;
 
+import java.util.List;
+
 import Model.Classes.Accessories;
 import Model.Classes.Devices;
 import Model.Classes.Game;
 import Model.Classes.Item;
+import Model.Classes.ItemResponsePOJO;
+import Model.Classes.ItemResponsePOJOlist;
 import Model.Classes.Response;
 import Model.Classes.User;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -31,6 +36,9 @@ public interface IRetrofit {
 
     @POST("users/{email}/passwordFinish")
     Observable<Response> resetPasswordFinish(@Path("email") String email, @Body User user);
+
+    @GET("items")
+    Call<ItemResponsePOJOlist> getAllItems();
 
     @POST("items")
     Observable<Response> createItem(@Body Item item);

@@ -17,6 +17,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,67 +37,86 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
+import Model.Classes.Accessories;
+import Model.Classes.Devices;
 import Model.Classes.Game;
 import Model.Classes.Item;
+import Model.Classes.ItemResponsePOJO;
+import Model.Classes.ItemResponsePOJOlist;
 import Model.Classes.Response;
 import Model.Classes.Shipping;
+import View.Activitys.Adapters.RecyclerViewAdapter;
 import View.Activitys.CreateItem;
 import View.Activitys.Homepage;
+import View.Activitys.ShowSelectedItem;
+import network.IRetrofit;
 import network.NetworkUtil;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.adapter.rxjava.HttpException;
+import retrofit2.converter.gson.GsonConverterFactory;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import utils.Constants;
-
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.converter.gson.GsonConverterFactory;
 public class HomeFragment extends Fragment {
     private String mToken;
     private String mEmail;
-    Button btn_createItem;
     TextView tw_out;
     Bitmap bitmap;
     AlertDialog alertDialogWithRadioButtons;
     String selected;
     private CompositeSubscription mSubscriptions;
+    private NetworkUtil networkUtil;
     private SharedPreferences mSharedPreferences;
     Context applicationContext = Homepage.getContextOfApplication();
+    RecyclerView recyclerView;
+    ItemResponsePOJOlist itemResponsePOJOlist = new ItemResponsePOJOlist();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         tw_out = (TextView) rootView.findViewById(R.id.tw_out);
-        btn_createItem = (Button) rootView.findViewById(R.id.btn_createItem);
         tw_out.setText(mEmail);
         mSubscriptions = new CompositeSubscription();
         initSharedPreferences();
 
+        recyclerView = (RecyclerView)rootView.findViewById(R.id.rv);
 
+
+
+        List<Game> games = new ArrayList<>();
+        List<Devices> devices = new ArrayList<>();
+        List<Accessories> accessories = new ArrayList<>();
+        getAllItems();
+        Game game = new Game();
+        game.setTitle("God of war");
+        game.setPrice(44);
+        game.setPlatform("PS4");
+        Devices device = new Devices();
+        device.setTitle("juu of war");
+        device.setPrice(44);
+        device.setPlatform("PS4");
+        Game game2 = new Game();
+        game2.setTitle("Assassin's creed");
+        game2.setPrice(20);
+        game2.setPlatform("XBOX");
+        games.add(game);
+        games.add(game2);
+        devices.add(device);
         applicationContext.getContentResolver();
-
-        btn_createItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Item item = new Item();
-                Game game = new Game();
-                Shipping shipping = new Shipping();
-                shipping.setPickUpLocation("mb");
-                shipping.setShippingType("posta");
-                item.setTitle("God of War");
-                item.setPlatform("ps4");
-                item.setDescription("asfasf");
-                item.setPrice(23);
-                item.setShipping(shipping);
-
-                createItem(item);
-            }
-
-        });
 
         FloatingActionButton fab = rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -166,18 +187,46 @@ public class HomeFragment extends Fragment {
         mToken = mSharedPreferences.getString(Constants.TOKEN,"");
         mEmail = mSharedPreferences.getString(Constants.EMAIL,"");
 
+
     }
 
+    private void getAllItems(){
+        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create();
 
+        Call<ItemResponsePOJOlist> call = NetworkUtil.getRetrofit(gsonConverterFactory).getAllItems();
 
-    private void createItem(Item item){
-        mSubscriptions.add(NetworkUtil.getRetrofit().createItem(item)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse,this::handleError));
+        retrofit2.Callback<ItemResponsePOJOlist> callback = new Callback<ItemResponsePOJOlist>(){
+            @Override
+            public void onResponse(Call<ItemResponsePOJOlist> call, retrofit2.Response<ItemResponsePOJOlist> response) {
+                try {
+                    if (response.isSuccessful()) {
+
+                        ItemResponsePOJOlist userDtoList = response.body();
+
+                        showItems(userDtoList);
+
+                    } else {
+                        String errorMessage = response.errorBody().string();
+                        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+                    }
+                }catch(IOException ex)
+                {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ItemResponsePOJOlist> call, Throwable t) {
+                Toast.makeText(applicationContext, t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        };
+
+        // Send request to web server and process response with the callback object.
+        call.enqueue(callback);
     }
 
-    private void handleResponse(Response response) {
+    //mSubscription handlers
+    private void handleResponse(Model.Classes.Response response) {
 
         Toast.makeText(applicationContext, response.getMessage(), Toast.LENGTH_LONG ).show();
 
@@ -192,17 +241,55 @@ public class HomeFragment extends Fragment {
             try {
 
                 String errorBody = ((HttpException) error).response().errorBody().string();
-                Response response = gson.fromJson(errorBody,Response.class);
+                Model.Classes.Response response = gson.fromJson(errorBody, Model.Classes.Response.class);
                 Toast.makeText(applicationContext, response.getMessage(), Toast.LENGTH_LONG ).show();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
 
-            Toast.makeText(applicationContext, "Network Error", Toast.LENGTH_LONG ).show();
+            //Toast.makeText(applicationContext, "Network Error", Toast.LENGTH_LONG ).show();
         }
     }
 
 
+    private void showItems(ItemResponsePOJOlist userDtoList)
+    {
+        if(userDtoList != null) {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(linearLayoutManager);
+            itemResponsePOJOlist.setItemResponsePOJOlist(userDtoList.getItemResponsePOJOlist());
+            RecyclerViewAdapter adapter = new RecyclerViewAdapter(userDtoList.getItemResponsePOJOlist());
+            adapter.setOnItemClickListener(onItemClickListener);
+            recyclerView.setAdapter(adapter);
+        }
+    }
 
+    private View.OnClickListener onItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            //TODO: Step 4 of 4: Finally call getTag() on the view.
+            // This viewHolder will have all required values.
+            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
+            int position = viewHolder.getAdapterPosition();
+            // viewHolder.getItemId();
+            // viewHolder.getItemViewType();
+            // viewHolder.itemView;
+            ItemResponsePOJO thisItem = itemResponsePOJOlist.getItemResponsePOJOlist().get(position);
+            //Toast.makeText(getActivity(), "You Clicked: " + thisItem.getTitle(), Toast.LENGTH_SHORT).show();
+           String categories = "";
+
+
+            Intent intent = new Intent(getActivity(), ShowSelectedItem.class);
+            intent.putExtra("TITLE", thisItem.title);
+            intent.putExtra("PRICE", thisItem.price);
+            intent.putExtra("PLATFORM", thisItem.platform);
+            intent.putExtra("CATEGORIES", categories);
+            intent.putExtra("DESCRIPTION", thisItem.description);
+            intent.putExtra("IMAGE", thisItem.images);
+
+            startActivity(intent);
+        }
+    };
 }
