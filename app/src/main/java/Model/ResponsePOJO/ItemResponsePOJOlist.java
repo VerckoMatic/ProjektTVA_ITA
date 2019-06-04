@@ -1,8 +1,10 @@
-package Model.Classes;
+package Model.ResponsePOJO;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+
+import Model.ResponsePOJO.ItemResponsePOJO;
 
 public class ItemResponsePOJOlist {
     @SerializedName("data")

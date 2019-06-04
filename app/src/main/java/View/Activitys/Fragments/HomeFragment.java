@@ -5,12 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -19,12 +15,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,44 +25,27 @@ import com.example.matic.projekttva.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import Model.Classes.Accessories;
 import Model.Classes.Devices;
 import Model.Classes.Game;
-import Model.Classes.Item;
-import Model.Classes.ItemResponsePOJO;
-import Model.Classes.ItemResponsePOJOlist;
-import Model.Classes.Response;
-import Model.Classes.Shipping;
+import Model.ResponsePOJO.ItemResponsePOJO;
+import Model.ResponsePOJO.ItemResponsePOJOlist;
 import View.Activitys.Adapters.RecyclerViewAdapter;
 import View.Activitys.CreateItem;
 import View.Activitys.Homepage;
 import View.Activitys.ShowSelectedItem;
-import network.IRetrofit;
 import network.NetworkUtil;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.adapter.rxjava.HttpException;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import utils.Constants;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.converter.gson.GsonConverterFactory;
+
 public class HomeFragment extends Fragment {
     private String mToken;
     private String mEmail;
@@ -288,6 +264,7 @@ public class HomeFragment extends Fragment {
             intent.putExtra("CATEGORIES", categories);
             intent.putExtra("DESCRIPTION", thisItem.description);
             intent.putExtra("IMAGE", thisItem.images);
+            intent.putExtra("IDUSER", thisItem.User_idUser);
 
             startActivity(intent);
         }

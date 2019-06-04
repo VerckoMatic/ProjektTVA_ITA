@@ -1,6 +1,8 @@
-package Model.Classes;
+package Model.ResponsePOJO;
 
 import java.util.List;
+
+import Model.Classes.Shipping;
 
 public class ItemResponsePOJO {
 
@@ -13,8 +15,8 @@ public class ItemResponsePOJO {
     public String description;
     public String images;
     public int User_idUser;
-    String shippingType;
-    String pickupLocation;
+    public String shippingType;
+    public String pickupLocation;
     public Integer subscription;
     public int warranty;
     public String itemType;

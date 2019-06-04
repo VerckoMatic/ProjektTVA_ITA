@@ -13,10 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import Model.Classes.Accessories;
-import Model.Classes.Devices;
-import Model.Classes.Game;
-import Model.Classes.ItemResponsePOJO;
+import Model.ResponsePOJO.ItemResponsePOJO;
 
 import static utils.Constants.BASE_NO_SLASH_URL;
 
