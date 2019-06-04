@@ -11,6 +11,9 @@ import com.example.matic.projekttva.R;
 import com.squareup.picasso.Picasso;
 import com.stfalcon.frescoimageviewer.ImageViewer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static utils.Constants.BASE_NO_SLASH_URL;
 
 
