@@ -265,6 +265,8 @@ public class HomeFragment extends Fragment {
             intent.putExtra("DESCRIPTION", thisItem.description);
             intent.putExtra("IMAGE", thisItem.images);
             intent.putExtra("IDUSER", thisItem.User_idUser);
+            intent.putExtra("SHIPPINGTYPE", thisItem.shippingType);
+            intent.putExtra("PICKUPLOCATION", thisItem.pickupLocation);
 
             startActivity(intent);
         }

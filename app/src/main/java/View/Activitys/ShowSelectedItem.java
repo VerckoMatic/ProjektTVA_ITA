@@ -31,7 +31,7 @@ public class ShowSelectedItem extends AppCompatActivity {
     TextView tw_categories;
     TextView tw_sellerEmail;
     TextView tw_shippingType;
-    TextView tw_shippingLocation;
+    TextView tw_pickUpLocation;
     ImageView iw_photo;
     private CompositeSubscription mSubscriptions;
     @Override
@@ -45,6 +45,8 @@ public class ShowSelectedItem extends AppCompatActivity {
         tw_categories = (TextView) findViewById(R.id.tw_categories);
         tw_description = (TextView) findViewById(R.id.tw_description);
         tw_sellerEmail = (TextView) findViewById(R.id.tw_sellerEmail);
+        tw_shippingType = (TextView) findViewById(R.id.tw_shippingType);
+        tw_pickUpLocation = (TextView) findViewById(R.id.tw_pickUpLocation);
         iw_photo = (ImageView) findViewById(R.id.iw_photo);
         mSubscriptions = new CompositeSubscription();
 
@@ -54,6 +56,8 @@ public class ShowSelectedItem extends AppCompatActivity {
         String platform = intent.getStringExtra("PLATFORM");
         String categories = intent.getStringExtra("CATEGORIES");
         String description = intent.getStringExtra("DESCRIPTION");
+        String pickUpLocation = intent.getStringExtra("PICKUPLOCATION");
+        String shippingType = intent.getStringExtra("SHIPPINGTYPE");
         String image = intent.getStringExtra("IMAGE");
         int User_idUser = intent.getIntExtra("IDUSER", 888);
         getSeller(User_idUser);
@@ -63,6 +67,8 @@ public class ShowSelectedItem extends AppCompatActivity {
         tw_platform.setText("Platforma: " + platform);
         tw_categories.setText("Kategorije: " + categories);
         tw_description.setText("Opis: " + description);
+        tw_shippingType.setText("Možen tip prodaje: " + shippingType);
+        tw_pickUpLocation.setText("Lokacija: " + pickUpLocation);
         Picasso.get().load(BASE_NO_SLASH_URL+image).into(iw_photo);
 
     }
