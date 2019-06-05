@@ -74,5 +74,7 @@ public interface IRetrofit {
     @DELETE("/items/{idItem}")
     Call<Response> deleteOneItem(@Path("idItem") int idItem);
 
+    @PUT("/items/game/{idItem}")
+    Call<Response> updateOneItem(@Path("idItem") int idItem);
 
 }

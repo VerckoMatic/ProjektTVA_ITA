@@ -245,14 +245,12 @@ public class HomeFragment extends Fragment {
             // viewHolder.getItemViewType();
             // viewHolder.itemView;
             ItemResponsePOJO thisItem = itemResponsePOJOlist.getItemResponsePOJOlist().get(position);
-           String categories = "";
 
 
             Intent intent = new Intent(getActivity(), ShowSelectedItem.class);
             intent.putExtra("TITLE", thisItem.title);
             intent.putExtra("PRICE", thisItem.price);
             intent.putExtra("PLATFORM", thisItem.platform);
-            intent.putExtra("CATEGORIES", categories);
             intent.putExtra("DESCRIPTION", thisItem.description);
             intent.putExtra("IMAGE", thisItem.images);
             intent.putExtra("IDUSER", thisItem.User_idUser);

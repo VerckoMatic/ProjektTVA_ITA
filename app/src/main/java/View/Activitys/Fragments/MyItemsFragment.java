@@ -258,7 +258,9 @@ public class MyItemsFragment extends Fragment implements MyClickListener {
 
     @Override
     public void onEdit(int p) {
-
+        updateOneItem(itemResponsePOJOlist.getItemResponsePOJOlist().get(p).getIdItem());
+        mySwipeRefreshLayout.setRefreshing(true);
+        mySwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -270,7 +272,20 @@ public class MyItemsFragment extends Fragment implements MyClickListener {
 
     @Override
     public void onCardClick(int p) {
+        ItemResponsePOJO thisItem = itemResponsePOJOlist.getItemResponsePOJOlist().get(p);
 
+        Intent intent = new Intent(getActivity(), ShowSelectedItem.class);
+        intent.putExtra("TITLE", thisItem.title);
+        intent.putExtra("PRICE", thisItem.price);
+        intent.putExtra("PLATFORM", thisItem.platform);
+        intent.putExtra("DESCRIPTION", thisItem.description);
+        intent.putExtra("IMAGE", thisItem.images);
+        intent.putExtra("IDUSER", thisItem.User_idUser);
+        intent.putExtra("SHIPPINGTYPE", thisItem.shippingType);
+        intent.putExtra("PICKUPLOCATION", thisItem.pickupLocation);
+        intent.putExtra("IDITEM", thisItem.idItem);
+
+        startActivity(intent);
     }
 
 
@@ -287,7 +302,40 @@ public class MyItemsFragment extends Fragment implements MyClickListener {
 
                         Response responseGet = response.body();
                         Toast.makeText(getActivity(), responseGet.getMessage(), Toast.LENGTH_LONG).show();
-                        getAllItemsByUserId(21);
+                        getAllItemsByUserId(User_idUser);
+                    } else {
+                        String errorMessage = response.errorBody().string();
+                    }
+                }catch(IOException ex)
+                {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        };
+
+        // Send request to web server and process response with the callback object.
+        call.enqueue(callback);
+    }
+
+    private void updateOneItem(int idItem){
+        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create();
+
+        Call<Response> call = NetworkUtil.getRetrofit(gsonConverterFactory).updateOneItem(idItem);
+
+        retrofit2.Callback<Response> callback = new Callback<Response>(){
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                try {
+                    if (response.isSuccessful()) {
+
+                        Response responseGet = response.body();
+                        Toast.makeText(getActivity(), responseGet.getMessage(), Toast.LENGTH_LONG).show();
+                        getAllItemsByUserId(User_idUser);
                     } else {
                         String errorMessage = response.errorBody().string();
                     }
