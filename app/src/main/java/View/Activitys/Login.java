@@ -118,6 +118,7 @@ public class Login extends AppCompatActivity {
         editor.putString(Constants.TOKEN,response.getToken());
         editor.putString(Constants.EMAIL,response.getMessage());
         editor.putString(Constants.IDUSER, response.getIdUser());
+        editor.putString(Constants.IMAGE, response.getImage());
         editor.apply();
 
         et_email.setText(null);

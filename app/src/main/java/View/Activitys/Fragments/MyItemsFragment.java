@@ -35,6 +35,7 @@ import Model.Classes.Game;
 import Model.ResponsePOJO.ItemResponsePOJO;
 import Model.ResponsePOJO.ItemResponsePOJOlist;
 import View.Activitys.Adapters.RecyclerViewAdapter;
+import View.Activitys.Adapters.RecyclerViewAdapterMyItems;
 import View.Activitys.CreateItem;
 import View.Activitys.Homepage;
 import View.Activitys.ShowSelectedItem;
@@ -46,9 +47,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.subscriptions.CompositeSubscription;
 import utils.Constants;
 
-public class HomeFragment extends Fragment {
+public class MyItemsFragment extends Fragment {
+
     private String mToken;
-    private String mEmail;
+    private int User_idUser;
     TextView tw_out;
     Bitmap bitmap;
     AlertDialog alertDialogWithRadioButtons;
@@ -59,10 +61,12 @@ public class HomeFragment extends Fragment {
     Context applicationContext = Homepage.getContextOfApplication();
     RecyclerView recyclerView;
     ItemResponsePOJOlist itemResponsePOJOlist = new ItemResponsePOJOlist();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
 
         mSubscriptions = new CompositeSubscription();
         initSharedPreferences();
@@ -70,26 +74,8 @@ public class HomeFragment extends Fragment {
         recyclerView = (RecyclerView)rootView.findViewById(R.id.rv);
 
 
+        getAllItemsByUserId(User_idUser);
 
-        List<Game> games = new ArrayList<>();
-        List<Devices> devices = new ArrayList<>();
-        List<Accessories> accessories = new ArrayList<>();
-        getAllItems();
-        Game game = new Game();
-        game.setTitle("God of war");
-        game.setPrice(44);
-        game.setPlatform("PS4");
-        Devices device = new Devices();
-        device.setTitle("juu of war");
-        device.setPrice(44);
-        device.setPlatform("PS4");
-        Game game2 = new Game();
-        game2.setTitle("Assassin's creed");
-        game2.setPrice(20);
-        game2.setPlatform("XBOX");
-        games.add(game);
-        games.add(game2);
-        devices.add(device);
         applicationContext.getContentResolver();
 
         FloatingActionButton fab = rootView.findViewById(R.id.fab);
@@ -154,20 +140,18 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
-
     private void initSharedPreferences() {
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         mToken = mSharedPreferences.getString(Constants.TOKEN,"");
-        mEmail = mSharedPreferences.getString(Constants.EMAIL,"");
-
+        String tempStringUserId = mSharedPreferences.getString(Constants.IDUSER,"");
+        User_idUser = Integer.parseInt(tempStringUserId);
 
     }
-
-    private void getAllItems(){
+    private void getAllItemsByUserId(int User_idUser){
         GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create();
 
-        Call<ItemResponsePOJOlist> call = NetworkUtil.getRetrofit(gsonConverterFactory).getAllItems();
+        Call<ItemResponsePOJOlist> call = NetworkUtil.getRetrofit(gsonConverterFactory).getAllItemsByUserId(User_idUser);
 
         retrofit2.Callback<ItemResponsePOJOlist> callback = new Callback<ItemResponsePOJOlist>(){
             @Override
@@ -223,7 +207,6 @@ public class HomeFragment extends Fragment {
             }
         } else {
 
-            //Toast.makeText(applicationContext, "Network Error", Toast.LENGTH_LONG ).show();
         }
     }
 
@@ -234,7 +217,7 @@ public class HomeFragment extends Fragment {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(linearLayoutManager);
             itemResponsePOJOlist.setItemResponsePOJOlist(userDtoList.getItemResponsePOJOlist());
-            RecyclerViewAdapter adapter = new RecyclerViewAdapter(userDtoList.getItemResponsePOJOlist());
+            RecyclerViewAdapterMyItems adapter = new RecyclerViewAdapterMyItems(userDtoList.getItemResponsePOJOlist());
             adapter.setOnItemClickListener(onItemClickListener);
             recyclerView.setAdapter(adapter);
         }
@@ -251,7 +234,8 @@ public class HomeFragment extends Fragment {
             // viewHolder.getItemViewType();
             // viewHolder.itemView;
             ItemResponsePOJO thisItem = itemResponsePOJOlist.getItemResponsePOJOlist().get(position);
-           String categories = "";
+            //Toast.makeText(getActivity(), "You Clicked: " + thisItem.getTitle(), Toast.LENGTH_SHORT).show();
+            String categories = "";
 
 
             Intent intent = new Intent(getActivity(), ShowSelectedItem.class);
@@ -264,7 +248,6 @@ public class HomeFragment extends Fragment {
             intent.putExtra("IDUSER", thisItem.User_idUser);
             intent.putExtra("SHIPPINGTYPE", thisItem.shippingType);
             intent.putExtra("PICKUPLOCATION", thisItem.pickupLocation);
-            intent.putExtra("IDITEM", thisItem.idItem);
 
             startActivity(intent);
         }

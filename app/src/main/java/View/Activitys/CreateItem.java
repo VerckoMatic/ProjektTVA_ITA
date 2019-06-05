@@ -2,8 +2,6 @@ package View.Activitys;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -12,8 +10,6 @@ import com.example.matic.projekttva.R;
 import View.Activitys.Fragments.AddAccessorieFragment;
 import View.Activitys.Fragments.AddDeviceFragment;
 import View.Activitys.Fragments.AddGameFragment;
-import View.Activitys.Fragments.AddItemBasicInfo;
-import View.Activitys.Fragments.ProfilFragment;
 
 public class CreateItem extends AppCompatActivity {
 

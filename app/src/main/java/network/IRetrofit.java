@@ -13,15 +13,19 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import rx.Observable;
 
 public interface IRetrofit {
 
+
+    //Users
     @POST("users/auth")
     Observable<Response> login(@Body User user);
 
@@ -40,8 +44,16 @@ public interface IRetrofit {
     @POST("users/{email}/passwordFinish")
     Observable<Response> resetPasswordFinish(@Path("email") String email, @Body User user);
 
+    @PUT("users/{idUser}")
+    Call<Response> updateUsersImage(@Path("idUser") int idUser, @Body User user);
+
+
+    //Items
     @GET("items")
     Call<ItemResponsePOJOlist> getAllItems();
+
+    @GET("items/{User_idUser}")
+    Call<ItemResponsePOJOlist> getAllItemsByUserId(@Path("User_idUser") int User_idUser);
 
     @POST("items")
     Observable<Response> createItem(@Body Item item);
@@ -58,6 +70,9 @@ public interface IRetrofit {
     @Multipart
     @POST("/items/upload")
     Observable<Response> postImage(@Part MultipartBody.Part image, @Part("file") RequestBody name);
+
+    @DELETE("/items/{idItem}")
+    Call<Response> deleteOneItem(@Path("idItem") int idItem);
 
 
 }

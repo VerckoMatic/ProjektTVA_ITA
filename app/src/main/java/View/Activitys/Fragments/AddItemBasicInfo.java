@@ -60,14 +60,14 @@ import utils.Constants;
 
 public class AddItemBasicInfo extends Fragment {
 
-    ImageView img_choose;
-    Button btn_image;
-    EditText et_pickupLocation;
-    EditText et_category;
-    EditText et_price;
-    Spinner sp_shippingType;
-    Button btn_next;
-    Context applicationContext = CreateItem.getContextOfApplication();
+    private ImageView img_choose;
+    private Button btn_image;
+    private EditText et_pickupLocation;
+    private EditText et_category;
+    private EditText et_price;
+    private Spinner sp_shippingType;
+    private Button btn_next;
+    private Context applicationContext = CreateItem.getContextOfApplication();
     public String imageServerLocation;
     private CompositeSubscription mSubscriptions;
     private CompositeSubscription mSubscriptionsGame;

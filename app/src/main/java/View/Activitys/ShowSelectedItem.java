@@ -54,14 +54,15 @@ public class ShowSelectedItem extends AppCompatActivity {
         String title = intent.getStringExtra("TITLE");
         String price = intent.getStringExtra("PRICE");
         String platform = intent.getStringExtra("PLATFORM");
-        String categories = intent.getStringExtra("CATEGORIES");
+        String categories = "";
         String description = intent.getStringExtra("DESCRIPTION");
         String pickUpLocation = intent.getStringExtra("PICKUPLOCATION");
         String shippingType = intent.getStringExtra("SHIPPINGTYPE");
         String image = intent.getStringExtra("IMAGE");
         int User_idUser = intent.getIntExtra("IDUSER", 888);
+        int idItem = intent.getIntExtra("IDITEM", 888);
         getSeller(User_idUser);
-        getCategories(4);
+        getCategories(idItem);
         tw_title.setText(title);
         tw_price.setText(price + " €");
         tw_platform.setText("Platforma: " + platform);
@@ -123,7 +124,7 @@ public class ShowSelectedItem extends AppCompatActivity {
                         setCategories(categoryList);
                     } else {
                         String errorMessage = response.errorBody().string();
-                        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
                     }
                 }catch(IOException ex)
                 {
@@ -132,7 +133,7 @@ public class ShowSelectedItem extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<CategoriesResponsePOJOlist> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         };

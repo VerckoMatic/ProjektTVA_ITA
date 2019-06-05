@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import View.Activitys.Adapters.RecyclerViewAdapter;
 import View.Activitys.Adapters.RecyclerViewPS4StoreAdapter;
 
-public class ProfilFragment extends Fragment {
+public class CommingSoonFragment extends Fragment {
     private ProgressDialog mProgressDialog;
     private String url = "https://store.playstation.com/en-si/grid/STORE-MSF75508-COMINGSOON/1";
     private ArrayList<String> titleList = new ArrayList<>();
@@ -51,8 +51,7 @@ public class ProfilFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             mProgressDialog = new ProgressDialog(getActivity());
-            mProgressDialog.setTitle("Android Basic JSoup Tutorial");
-            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setTitle("Prenašam podatke....");
             mProgressDialog.setIndeterminate(false);
             mProgressDialog.show();
         }
