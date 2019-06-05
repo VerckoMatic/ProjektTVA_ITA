@@ -5,31 +5,71 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.matic.projekttva.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Model.ResponsePOJO.ItemResponsePOJO;
 
 import static utils.Constants.BASE_NO_SLASH_URL;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ItemViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ItemViewHolder> implements Filterable {
 
     public List<ItemResponsePOJO> itemList;
+    public List<ItemResponsePOJO> itemSearchFull;
     private View.OnClickListener mOnItemClickListener;
 
 
     public RecyclerViewAdapter(List<ItemResponsePOJO> itemList){
         this.itemList = itemList;
+        itemSearchFull = new ArrayList<>(itemList);
     }
 
     public void setOnItemClickListener(View.OnClickListener itemClickListener) {
         mOnItemClickListener = itemClickListener;
     }
+
+    @Override
+    public Filter getFilter() {
+        return itemFilter;
+    }
+
+    private Filter itemFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+           List<ItemResponsePOJO> filteredList = new ArrayList<>();
+
+           if(constraint == null ||constraint.length() == 0){
+               filteredList.addAll(itemSearchFull);
+           }else{
+               String filterPattern = constraint.toString().toLowerCase().trim();
+               for(ItemResponsePOJO item : itemSearchFull){
+                   if(item.getTitle().toLowerCase().contains(filterPattern)){
+                       filteredList.add(item);
+                   }
+               }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+           return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            itemList.clear();
+            itemList.addAll((List)results.values);
+            notifyDataSetChanged();
+        }
+    };
 
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {

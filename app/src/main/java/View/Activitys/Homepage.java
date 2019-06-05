@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,6 +22,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.matic.projekttva.R;
@@ -29,6 +32,7 @@ import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +47,9 @@ import java.util.Calendar;
 
 import Model.Classes.Response;
 import Model.Classes.User;
-import Model.ResponsePOJO.ItemResponsePOJOlist;
+import android.app.SearchManager;
+import android.support.v7.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import View.Activitys.Fragments.HomeFragment;
 import View.Activitys.Fragments.MyItemsFragment;
 import View.Activitys.Fragments.CommingSoonFragment;
@@ -94,8 +100,8 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
         contextOfApplication = getApplicationContext();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         initSharredPrefferences();
-
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);

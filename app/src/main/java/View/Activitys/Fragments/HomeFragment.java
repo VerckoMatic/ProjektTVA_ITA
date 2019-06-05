@@ -1,5 +1,6 @@
 package View.Activitys.Fragments;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,13 +13,19 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +34,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import Model.Classes.Accessories;
-import Model.Classes.Devices;
-import Model.Classes.Game;
 import Model.ResponsePOJO.ItemResponsePOJO;
 import Model.ResponsePOJO.ItemResponsePOJOlist;
 import View.Activitys.Adapters.RecyclerViewAdapter;
@@ -50,6 +52,7 @@ import utils.Constants;
 public class HomeFragment extends Fragment {
     private String mToken;
     private String mEmail;
+    Context mContext;
     TextView tw_out;
     Bitmap bitmap;
     AlertDialog alertDialogWithRadioButtons;
@@ -59,6 +62,7 @@ public class HomeFragment extends Fragment {
     private SharedPreferences mSharedPreferences;
     Context applicationContext = Homepage.getContextOfApplication();
     RecyclerView recyclerView;
+    RecyclerViewAdapter adapter;
     ItemResponsePOJOlist itemResponsePOJOlist = new ItemResponsePOJOlist();
     @Nullable
     @Override
@@ -67,7 +71,8 @@ public class HomeFragment extends Fragment {
 
         mSubscriptions = new CompositeSubscription();
         initSharedPreferences();
-
+        setHasOptionsMenu(true);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().hide();
         recyclerView = (RecyclerView)rootView.findViewById(R.id.rv);
 
 
@@ -228,7 +233,7 @@ public class HomeFragment extends Fragment {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(linearLayoutManager);
             itemResponsePOJOlist.setItemResponsePOJOlist(userDtoList.getItemResponsePOJOlist());
-            RecyclerViewAdapter adapter = new RecyclerViewAdapter(userDtoList.getItemResponsePOJOlist());
+            adapter = new RecyclerViewAdapter(userDtoList.getItemResponsePOJOlist());
             adapter.setOnItemClickListener(onItemClickListener);
             recyclerView.setAdapter(adapter);
         }
@@ -261,4 +266,33 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         }
     };
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.search_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+
+        });
+    }
+
+
+
+
 }

@@ -7,20 +7,20 @@
     tools:context="View.Activitys.Homepage"
     tools:layout_editor_absoluteY="25dp"
     android:id="@+id/drawer_layout">
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <!-- A CardView that contains a TextView -->
-
 
         <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/toolbar"
-            android:background="@color/colorPrimaryDark"></android.support.v7.widget.Toolbar>
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            >
+        </android.support.v7.widget.Toolbar>
 
-    </LinearLayout>
+
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
