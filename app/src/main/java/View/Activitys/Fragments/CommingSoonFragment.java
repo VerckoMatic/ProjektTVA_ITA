@@ -6,13 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.matic.projekttva.R;
 
@@ -24,7 +23,6 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import View.Activitys.Adapters.RecyclerViewAdapter;
 import View.Activitys.Adapters.RecyclerViewPS4StoreAdapter;
 
 public class CommingSoonFragment extends Fragment {
@@ -37,9 +35,20 @@ public class CommingSoonFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_profil, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_comming_soon_fragment, container, false);
         new Description().execute();
         recyclerView = (RecyclerView)rootView.findViewById(R.id.rv_ps4store);
+
+        SwipeRefreshLayout mySwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        new Description().execute();
+                        mySwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
 
         return rootView;
     }

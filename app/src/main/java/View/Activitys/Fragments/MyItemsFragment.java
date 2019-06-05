@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,7 @@ import java.util.List;
 import Model.Classes.Accessories;
 import Model.Classes.Devices;
 import Model.Classes.Game;
+import Model.Classes.Response;
 import Model.ResponsePOJO.ItemResponsePOJO;
 import Model.ResponsePOJO.ItemResponsePOJOlist;
 import View.Activitys.Adapters.RecyclerViewAdapter;
@@ -46,8 +48,8 @@ import retrofit2.adapter.rxjava.HttpException;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.subscriptions.CompositeSubscription;
 import utils.Constants;
-
-public class MyItemsFragment extends Fragment {
+import View.Activitys.Adapters.RecyclerViewAdapterMyItems.*;
+public class MyItemsFragment extends Fragment implements MyClickListener {
 
     private String mToken;
     private int User_idUser;
@@ -61,7 +63,7 @@ public class MyItemsFragment extends Fragment {
     Context applicationContext = Homepage.getContextOfApplication();
     RecyclerView recyclerView;
     ItemResponsePOJOlist itemResponsePOJOlist = new ItemResponsePOJOlist();
-
+    SwipeRefreshLayout mySwipeRefreshLayout;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,7 +74,8 @@ public class MyItemsFragment extends Fragment {
         initSharedPreferences();
 
         recyclerView = (RecyclerView)rootView.findViewById(R.id.rv);
-
+        mySwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+        refresh();
 
         getAllItemsByUserId(User_idUser);
 
@@ -217,8 +220,8 @@ public class MyItemsFragment extends Fragment {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(linearLayoutManager);
             itemResponsePOJOlist.setItemResponsePOJOlist(userDtoList.getItemResponsePOJOlist());
-            RecyclerViewAdapterMyItems adapter = new RecyclerViewAdapterMyItems(userDtoList.getItemResponsePOJOlist());
-            adapter.setOnItemClickListener(onItemClickListener);
+            RecyclerViewAdapterMyItems adapter = new RecyclerViewAdapterMyItems(applicationContext,userDtoList.getItemResponsePOJOlist());
+            adapter.setOnItemClickListener(MyItemsFragment.this);
             recyclerView.setAdapter(adapter);
         }
     }
@@ -252,4 +255,67 @@ public class MyItemsFragment extends Fragment {
             startActivity(intent);
         }
     };
+
+    @Override
+    public void onEdit(int p) {
+
+    }
+
+    @Override
+    public void onDelete(int p) {
+        deleteOneItem(itemResponsePOJOlist.getItemResponsePOJOlist().get(p).getIdItem());
+        mySwipeRefreshLayout.setRefreshing(true);
+        mySwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onCardClick(int p) {
+
+    }
+
+
+    private void deleteOneItem(int idItem){
+        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create();
+
+        Call<Response> call = NetworkUtil.getRetrofit(gsonConverterFactory).deleteOneItem(idItem);
+
+        retrofit2.Callback<Response> callback = new Callback<Response>(){
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                try {
+                    if (response.isSuccessful()) {
+
+                        Response responseGet = response.body();
+                        Toast.makeText(getActivity(), responseGet.getMessage(), Toast.LENGTH_LONG).show();
+                        getAllItemsByUserId(21);
+                    } else {
+                        String errorMessage = response.errorBody().string();
+                    }
+                }catch(IOException ex)
+                {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        };
+
+        // Send request to web server and process response with the callback object.
+        call.enqueue(callback);
+    }
+
+    public void refresh(){
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        getAllItemsByUserId(User_idUser);
+                        mySwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
+    }
 }

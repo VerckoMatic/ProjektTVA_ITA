@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -70,26 +71,19 @@ public class HomeFragment extends Fragment {
         recyclerView = (RecyclerView)rootView.findViewById(R.id.rv);
 
 
+        SwipeRefreshLayout mySwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        getAllItems();
+                        mySwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
 
-        List<Game> games = new ArrayList<>();
-        List<Devices> devices = new ArrayList<>();
-        List<Accessories> accessories = new ArrayList<>();
         getAllItems();
-        Game game = new Game();
-        game.setTitle("God of war");
-        game.setPrice(44);
-        game.setPlatform("PS4");
-        Devices device = new Devices();
-        device.setTitle("juu of war");
-        device.setPrice(44);
-        device.setPlatform("PS4");
-        Game game2 = new Game();
-        game2.setTitle("Assassin's creed");
-        game2.setPrice(20);
-        game2.setPlatform("XBOX");
-        games.add(game);
-        games.add(game2);
-        devices.add(device);
+
         applicationContext.getContentResolver();
 
         FloatingActionButton fab = rootView.findViewById(R.id.fab);
