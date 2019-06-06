@@ -32,7 +32,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tw_title"
+                android:id="@+id/et_title"
                 android:layout_width="180dp"
                 android:layout_height="73dp"
                 android:layout_alignTop="@+id/iw_photo"
@@ -64,13 +64,13 @@
                 android:id="@+id/tw_price"
                 android:layout_width="177dp"
                 android:layout_height="18dp"
-                android:layout_alignEnd="@+id/tw_title"
+                android:layout_alignEnd="@+id/et_title"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/iw_photo"
-                app:layout_constraintTop_toBottomOf="@+id/tw_title" />
+                app:layout_constraintTop_toBottomOf="@+id/et_title" />
 
             <ImageView
                 android:id="@+id/iw_delete"

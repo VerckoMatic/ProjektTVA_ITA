@@ -13,7 +13,10 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +50,8 @@ import Model.Classes.Item;
 import Model.Classes.Response;
 import Model.Classes.Shipping;
 import View.Activitys.CreateItem;
+import View.Activitys.Homepage;
+import View.Activitys.UpdateItem;
 import network.NetworkUtil;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -153,6 +158,8 @@ public class AddItemBasicInfo extends Fragment {
 
                 }
 
+                Intent i = new Intent(getActivity(), Homepage.class);
+                startActivity(i);
             }
         });
 
@@ -293,8 +300,8 @@ public class AddItemBasicInfo extends Fragment {
                 e.printStackTrace();
             }
         } else {
+            Toast.makeText(applicationContext, "Napaka na omrežju", Toast.LENGTH_LONG ).show();
 
-            Toast.makeText(applicationContext, "Network Error", Toast.LENGTH_LONG ).show();
         }
     }
 //upload picture
@@ -344,21 +351,22 @@ public class AddItemBasicInfo extends Fragment {
                 try {
                     thumbnail = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentURI);
                     String path = saveImage(thumbnail);
-                    Toast.makeText(applicationContext, "Image Saved!", Toast.LENGTH_SHORT).show();
-                    img_choose.setImageBitmap(thumbnail);
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), "Slika dodana!", Snackbar.LENGTH_LONG)
+                            .setAction("Slika dodana!", null).show(); img_choose.setImageBitmap(thumbnail);
                     multipartImageUpload(thumbnail);
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(applicationContext, "Failed!", Toast.LENGTH_SHORT).show();
-                }
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), "Napaka!", Snackbar.LENGTH_LONG)
+                            .setAction("Napaka!", null).show();  }
             }
 
         } else if (requestCode == 1) {
             thumbnail = (Bitmap) data.getExtras().get("data");
             img_choose.setImageBitmap(thumbnail);
             saveImage(thumbnail);
-            Toast.makeText(applicationContext, "Image Saved!", Toast.LENGTH_SHORT).show();
+            Snackbar.make(getActivity().findViewById(android.R.id.content), "Slika dodana!", Snackbar.LENGTH_LONG)
+                    .setAction("Slika dodana!", null).show();
             multipartImageUpload(thumbnail);
         }
     }
@@ -429,7 +437,7 @@ public class AddItemBasicInfo extends Fragment {
     private void handlePostImage(Response response) {
 
         imageServerLocation = response.getMessage().toString();
-        Toast.makeText(applicationContext, "image: " + imageServerLocation, Toast.LENGTH_LONG ).show();
+
     }
     private void handlePostImageError(Throwable error) {
 
@@ -442,13 +450,14 @@ public class AddItemBasicInfo extends Fragment {
                 String errorBody = ((HttpException) error).response().errorBody().string();
                 Response response = gson.fromJson(errorBody,Response.class);
                 imageServerLocation = response.getMessage().toString();
-                //Toast.makeText(applicationContext, "error", Toast.LENGTH_LONG ).show();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
+            Snackbar.make(getActivity().findViewById(android.R.id.content), "Napaka na omrežju", Snackbar.LENGTH_LONG)
+                    .setAction("Napaka na omrežju", null).show();
 
-            Toast.makeText(applicationContext, "Network Error", Toast.LENGTH_LONG ).show();
         }
     }
 

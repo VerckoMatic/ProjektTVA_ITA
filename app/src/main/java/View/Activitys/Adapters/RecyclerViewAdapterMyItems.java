@@ -1,7 +1,6 @@
 package View.Activitys.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,26 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.matic.projekttva.R;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.List;
 
-import Model.Classes.Response;
 import Model.ResponsePOJO.ItemResponsePOJO;
-import Model.ResponsePOJO.ItemResponsePOJOlist;
-import View.Activitys.Fragments.MyItemsFragment;
-import View.Activitys.ShowSelectedItem;
-import network.NetworkUtil;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.adapter.rxjava.HttpException;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static utils.Constants.BASE_NO_SLASH_URL;
 
@@ -59,7 +45,7 @@ public class RecyclerViewAdapterMyItems extends RecyclerView.Adapter<RecyclerVie
         public ItemViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView)itemView.findViewById(R.id.cv);
-            tw_title = (TextView)itemView.findViewById(R.id.tw_title);
+            tw_title = (TextView)itemView.findViewById(R.id.et_title);
             tw_platform = (TextView)itemView.findViewById(R.id.tw_platform);
             tw_price = (TextView)itemView.findViewById(R.id.tw_price);
             iw_photo = (ImageView)itemView.findViewById(R.id.iw_photo);

@@ -49,7 +49,7 @@
                 android:id="@+id/tw_price_content"
                 android:layout_width="177dp"
                 android:layout_height="18dp"
-                android:layout_alignEnd="@+id/tw_title"
+                android:layout_alignEnd="@+id/et_title"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="12dp"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -75,6 +75,12 @@ public interface IRetrofit {
     Call<Response> deleteOneItem(@Path("idItem") int idItem);
 
     @PUT("/items/game/{idItem}")
-    Call<Response> updateOneItem(@Path("idItem") int idItem);
+    Observable<Response> updateOneItem(@Path("idItem") int idItem, @Body Game game);
+
+    @PUT("/items/game/{idItem}")
+    Observable<Response> updateDeviceItem(@Path("idItem") int idItem, @Body Devices devices);
+
+    @PUT("/items/game/{idItem}")
+    Observable<Response> updateAccessoriesItem(@Path("idItem") int idItem, @Body Accessories accessories);
 
 }

@@ -19,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ import View.Activitys.Adapters.RecyclerViewAdapterMyItems;
 import View.Activitys.CreateItem;
 import View.Activitys.Homepage;
 import View.Activitys.ShowSelectedItem;
+import View.Activitys.UpdateItem;
 import network.NetworkUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -101,18 +103,12 @@ public class MyItemsFragment extends Fragment implements MyClickListener {
                                 switch (item)
                                 {
                                     case 0:
-                                        Snackbar.make(view, "Izbrano: Igra", Snackbar.LENGTH_LONG)
-                                                .setAction("Action", null).show();
                                         selected = "Game";
                                         break;
                                     case 1:
-                                        Snackbar.make(view, "Izbrano: Naprava", Snackbar.LENGTH_LONG)
-                                                .setAction("Action", null).show();
                                         selected = "Devices";
                                         break;
                                     case 2:
-                                        Snackbar.make(view, "Izbrano: Dodatki", Snackbar.LENGTH_LONG)
-                                                .setAction("Action", null).show();
                                         selected = "Accessories";
                                         break;
                                 }
@@ -258,9 +254,22 @@ public class MyItemsFragment extends Fragment implements MyClickListener {
 
     @Override
     public void onEdit(int p) {
-        updateOneItem(itemResponsePOJOlist.getItemResponsePOJOlist().get(p).getIdItem());
-        mySwipeRefreshLayout.setRefreshing(true);
-        mySwipeRefreshLayout.setRefreshing(false);
+        //updateOneItem(itemResponsePOJOlist.getItemResponsePOJOlist().get(p).getIdItem());
+        Intent intent = new Intent(getActivity(), UpdateItem.class);
+        ItemResponsePOJO thisItem = itemResponsePOJOlist.getItemResponsePOJOlist().get(p);
+        intent.putExtra("TITLE", thisItem.title);
+        intent.putExtra("PRICE", thisItem.price);
+        intent.putExtra("PLATFORM", thisItem.platform);
+        intent.putExtra("DESCRIPTION", thisItem.description);
+        intent.putExtra("IMAGE", thisItem.images);
+        intent.putExtra("IDUSER", thisItem.User_idUser);
+        intent.putExtra("SHIPPINGTYPE", thisItem.shippingType);
+        intent.putExtra("PICKUPLOCATION", thisItem.pickupLocation);
+        intent.putExtra("IDITEM", thisItem.idItem);
+        intent.putExtra("ITEMTYPE", thisItem.itemType);
+        intent.putExtra("PLATFORM", thisItem.platform);
+        intent.putExtra("TYPE", thisItem.type);
+        startActivity(intent);
     }
 
     @Override
@@ -322,7 +331,7 @@ public class MyItemsFragment extends Fragment implements MyClickListener {
         call.enqueue(callback);
     }
 
-    private void updateOneItem(int idItem){
+   /* private void updateOneItem(int idItem){
         GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create();
 
         Call<Response> call = NetworkUtil.getRetrofit(gsonConverterFactory).updateOneItem(idItem);
@@ -353,7 +362,7 @@ public class MyItemsFragment extends Fragment implements MyClickListener {
 
         // Send request to web server and process response with the callback object.
         call.enqueue(callback);
-    }
+    }*/
 
     public void refresh(){
         mySwipeRefreshLayout.setOnRefreshListener(

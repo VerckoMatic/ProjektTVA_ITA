@@ -31,12 +31,11 @@
         <activity
             android:name="View.Activitys.Homepage"
             android:label="@string/title_activity_homepage"
-            android:theme="@style/AppTheme.NoActionBar" >
-            </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name="View.Activitys.ForgotPassword" />
         <activity android:name="View.Activitys.CreateItem" />
         <activity android:name="View.Activitys.ShowSelectedItem" />
-        <activity android:name="View.Activitys.UpdateItemsActivity"></activity>
+        <activity android:name="View.Activitys.UpdateItem"></activity>
     </application>
 
 </manifest>

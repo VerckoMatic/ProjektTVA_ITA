@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="81dp">
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cv">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv"
+                android:layout_width="wrap_content"
+                android:layout_height="256dp"
+                android:layout_margin="10pt"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
+
+                <ImageView
+                    android:id="@+id/iw_photo"
+                    android:layout_width="390dp"
+                    android:layout_height="250dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:adjustViewBounds="true"
+                    tools:layout_editor_absoluteX="30dp"
+                    tools:layout_editor_absoluteY="16dp"
+                    android:layout_gravity="center"/>
+
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view"
+                android:layout_width="344dp"
+                android:layout_height="281dp"
+                android:layout_gravity="center"
+                app:cardElevation="2dp"
+                card_view:cardCornerRadius="10dp"
+                card_view:cardPreventCornerOverlap="false"
+                card_view:cardUseCompatPadding="true">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_title"
+                        android:layout_width="322dp"
+                        android:layout_height="53dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:hint="Naslov"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        card_view:layout_constraintBottom_toTopOf="@+id/et_price"
+                        card_view:layout_constraintEnd_toEndOf="parent"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        card_view:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/et_price"
+                        android:layout_width="322dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginBottom="2dp"
+                        android:hint="Cena v €"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        card_view:layout_constraintBottom_toTopOf="@+id/et_location"
+                        card_view:layout_constraintEnd_toEndOf="parent"
+                        card_view:layout_constraintHorizontal_bias="0.0"
+                        card_view:layout_constraintStart_toStartOf="parent" />
+
+                    <EditText
+                        android:id="@+id/et_description"
+                        android:layout_width="317dp"
+                        android:layout_height="107dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="8dp"
+                        android:hint="Opis"
+                        android:scrollbars="vertical"
+                        android:textSize="14sp"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintEnd_toEndOf="parent"
+                        card_view:layout_constraintStart_toStartOf="parent" />
+
+                    <EditText
+                        android:id="@+id/et_location"
+                        android:layout_width="322dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginBottom="2dp"
+                        android:hint="Lokacija"
+                        android:textSize="20sp"
+                        card_view:layout_constraintBottom_toTopOf="@+id/et_description"
+                        card_view:layout_constraintEnd_toEndOf="parent"
+                        card_view:layout_constraintHorizontal_bias="0.0"
+                        card_view:layout_constraintStart_toStartOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/cv_spinners"
+                android:layout_width="344dp"
+                android:layout_height="281dp"
+                android:layout_gravity="center"
+                app:cardElevation="2dp"
+                card_view:cardCornerRadius="10dp"
+                card_view:cardPreventCornerOverlap="false"
+                android:paddingTop="10dp"
+                card_view:cardUseCompatPadding="true">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Spinner
+                        android:id="@+id/sp_shippingType"
+                        android:layout_width="163dp"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="22dp"
+                        android:layout_marginBottom="15dp"
+                        card_view:layout_constraintBottom_toTopOf="@+id/et_category"
+                        card_view:layout_constraintEnd_toEndOf="parent"
+                        card_view:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="61dp"
+                        android:layout_marginBottom="53dp"
+                        android:text="Tip dostave:"
+                        card_view:layout_constraintBottom_toTopOf="@+id/textView5"
+                        card_view:layout_constraintEnd_toStartOf="@+id/sp_shippingType"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        card_view:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="69dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="79dp"
+                        android:layout_marginBottom="62dp"
+                        android:text="Kategorije"
+                        card_view:layout_constraintBottom_toTopOf="@+id/tw_plat"
+                        card_view:layout_constraintEnd_toStartOf="@+id/et_category"
+                        card_view:layout_constraintStart_toStartOf="parent" />
+
+                    <EditText
+                        android:id="@+id/et_category"
+                        android:layout_width="158dp"
+                        android:layout_height="65dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="24dp"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="Kategorije"
+                        android:inputType="textMultiLine"
+                        card_view:layout_constraintBottom_toTopOf="@+id/sp_platform"
+                        card_view:layout_constraintEnd_toEndOf="parent" />
+
+                    <Spinner
+                        android:id="@+id/sp_platform"
+                        android:layout_width="163dp"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="4dp"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintEnd_toEndOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tw_plat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginEnd="79dp"
+                        android:layout_marginBottom="9dp"
+                        android:text="Platforma:"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintEnd_toStartOf="@+id/sp_platform"
+                        card_view:layout_constraintStart_toStartOf="parent" />
+
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/cv_different"
+                android:layout_width="344dp"
+                android:layout_height="281dp"
+                android:layout_gravity="center"
+                android:paddingTop="10dp"
+                app:cardElevation="2dp"
+                card_view:cardCornerRadius="10dp"
+                card_view:cardPreventCornerOverlap="false"
+                card_view:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/et_itemType"
+                        android:layout_width="343dp"
+                        android:layout_height="70dp"
+                        android:ems="10"
+                        android:hint="Tip izdelka (npr. škatle za cd-je, gumbi za kontroler...) "
+                        android:inputType="textMultiLine"
+                        android:maxLength="44"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintEnd_toEndOf="parent"
+                        card_view:layout_constraintHorizontal_bias="0.333"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        card_view:layout_constraintTop_toTopOf="parent"
+                        card_view:layout_constraintVertical_bias="0.0" />
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tw_subscription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginBottom="114dp"
+                            android:text="Potrebna naročnina:"
+                            android:textSize="20sp" />
+
+                        <Spinner
+                        android:id="@+id/sp_subscription"
+                        android:layout_width="156dp"
+                        android:layout_height="47dp"
+                        android:layout_marginStart="-1dp"
+                        android:layout_marginEnd="-1dp"
+                        android:layout_marginBottom="-1dp"
+                        app:layout_constraintBottom_toTopOf="@+id/btn_toBasic"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tw_subscription" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tw_warranty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="21dp"
+                    android:layout_marginBottom="118dp"
+                    android:text="V garanciji:"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+
+                <Spinner
+                    android:id="@+id/sp_warranty"
+                    android:layout_width="180dp"
+                    android:layout_height="47dp"
+                    android:layout_marginStart="53dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="39dp"
+                    app:layout_constraintBottom_toTopOf="@+id/btn_toBasic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tw_warranty" />
+
+            </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/btn_update"
+                android:layout_width="93dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="270dp"
+                android:layout_marginEnd="26dp"
+                android:layout_marginBottom="31dp"
+                android:text="SPREMENI" />
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

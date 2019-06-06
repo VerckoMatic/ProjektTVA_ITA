@@ -37,7 +37,7 @@ public class ShowSelectedItem extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.card_image_item);
+        setContentView(R.layout.activity_show_selected_item);
 
         tw_title = (TextView) findViewById(R.id.tw_title1);
         tw_price = (TextView) findViewById(R.id.tw_price);
