@@ -49,6 +49,7 @@ public class Register extends AppCompatActivity {
                 user.setFullName(name.getText().toString());
                 user.setEmail(email.getText().toString());
                 user.setPassword(password.getText().toString());
+                user.setImage("/uploads/af1d6452ebd89ba1c20338f6b08ee5a6.png");
 
                 if(UserValidation.validateRegistrationConfirmPassword(confirmPassword.getText().toString(),password.getText().toString()) && UserValidation.validateRegistrationEmail(user.getEmail()) &&
                 UserValidation.validateRegistrationName(user.getFullName()) && UserValidation.validateRegistrationPassword(user.getPassword())){

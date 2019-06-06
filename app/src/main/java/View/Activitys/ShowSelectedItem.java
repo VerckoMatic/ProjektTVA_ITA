@@ -3,6 +3,8 @@ package View.Activitys;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +14,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
+import Model.Classes.User;
 import Model.ResponsePOJO.CategoriesResponsePOJOlist;
 import Model.ResponsePOJO.UserResponsePOJOlist;
 import network.NetworkUtil;
@@ -33,6 +36,7 @@ public class ShowSelectedItem extends AppCompatActivity {
     TextView tw_shippingType;
     TextView tw_pickUpLocation;
     ImageView iw_photo;
+    Button btn_contactSeller;
     private CompositeSubscription mSubscriptions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +52,9 @@ public class ShowSelectedItem extends AppCompatActivity {
         tw_shippingType = (TextView) findViewById(R.id.tw_shippingType);
         tw_pickUpLocation = (TextView) findViewById(R.id.tw_pickUpLocation);
         iw_photo = (ImageView) findViewById(R.id.iw_photo);
+        btn_contactSeller = (Button) findViewById(R.id.btn_contactSeller);
         mSubscriptions = new CompositeSubscription();
-
+        getSupportActionBar().hide();
         Intent intent = getIntent();
         String title = intent.getStringExtra("TITLE");
         String price = intent.getStringExtra("PRICE");
@@ -72,6 +77,16 @@ public class ShowSelectedItem extends AppCompatActivity {
         tw_pickUpLocation.setText("Lokacija: " + pickUpLocation);
         Picasso.get().load(BASE_NO_SLASH_URL+image).into(iw_photo);
 
+
+        btn_contactSeller.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ShowSelectedItem.this, Chat.class);
+                String idUser = String.valueOf(User_idUser);
+                i.putExtra("SELLEREMAIL", tw_sellerEmail.getText().toString());
+                startActivity(i);
+            }
+        });
     }
 
 
@@ -145,6 +160,7 @@ public class ShowSelectedItem extends AppCompatActivity {
     public void setSeller(UserResponsePOJOlist seller){
 
         tw_sellerEmail.setText(seller.getUserResponsePOJOS().get(0).getEmail());
+
     }
 
     public void setCategories(CategoriesResponsePOJOlist categoryList){

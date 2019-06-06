@@ -110,7 +110,7 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
         tw_email = (TextView) header.findViewById(R.id.tw_email);
 
         circleImageView = (CircleImageView) header.findViewById(R.id.profile_image);
-        if(mImage != "image"){
+        if(!mImage.equals("image")){
             Picasso.get().load(BASE_NO_SLASH_URL+mImage).into(circleImageView);
 
         }
@@ -158,11 +158,6 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new HomeFragment()).commit();
-                drawer.closeDrawer(GravityCompat.START);
-                break;
-            case R.id.nav_chat:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new CommingSoonFragment()).commit();
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_logout:
