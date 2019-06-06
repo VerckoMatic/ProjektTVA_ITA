@@ -62,7 +62,7 @@ public class Chat extends AppCompatActivity implements RoomListener {
         messageAdapter = new MessageAdapter(this);
         messagesView = (ListView) findViewById(R.id.messages_view);
         messagesView.setAdapter(messageAdapter);
-
+        getSupportActionBar().hide();
         Intent intentProfil = getIntent();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         uporabnik = mSharedPreferences.getString(Constants.EMAIL,"");
