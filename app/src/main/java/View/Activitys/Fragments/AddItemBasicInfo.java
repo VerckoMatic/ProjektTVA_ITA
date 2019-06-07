@@ -159,6 +159,7 @@ public class AddItemBasicInfo extends Fragment {
                 }
 
                 Intent i = new Intent(getActivity(), Homepage.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }
         });

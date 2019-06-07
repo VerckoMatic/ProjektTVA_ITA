@@ -52,6 +52,7 @@ public class Login extends AppCompatActivity {
         mSubscriptions = new CompositeSubscription();
         initSharedPreferences();
         checkIfLogined();
+        getSupportActionBar().hide();
         toRegisterActivity = (TextView) findViewById(R.id.tw_register);
         toLostPassword = (TextView) findViewById(R.id.tw_lostPassword);
         et_email = (EditText) findViewById(R.id.et_email);

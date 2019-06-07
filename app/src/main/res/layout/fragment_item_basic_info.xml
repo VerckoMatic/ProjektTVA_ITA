@@ -14,6 +14,7 @@
         android:layout_marginTop="3dp"
         android:layout_marginEnd="127dp"
         android:text="DODAJ SLIKO"
+        android:background="@drawable/all_buttons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_choose" />
@@ -76,11 +77,12 @@
 
     <Button
         android:id="@+id/btn_next"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="3dp"
         android:layout_marginBottom="16dp"
         android:text="OBJAVI"
+        android:background="@drawable/all_buttons"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/et_category" />
 

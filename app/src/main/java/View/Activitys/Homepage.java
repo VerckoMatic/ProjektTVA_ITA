@@ -168,7 +168,9 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
                 editor.putString(Constants.EMAIL,"");
                 editor.putString(Constants.TOKEN,"");
                 editor.apply();
-                finish();
+                Intent intent = new Intent(getApplicationContext(), Login.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
         }
         return true;

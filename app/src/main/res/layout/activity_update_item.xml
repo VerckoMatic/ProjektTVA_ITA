@@ -317,6 +317,7 @@
                 android:layout_marginStart="270dp"
                 android:layout_marginEnd="26dp"
                 android:layout_marginBottom="31dp"
+                android:background="@drawable/all_buttons"
                 android:text="SPREMENI" />
         </LinearLayout>
     </ScrollView>

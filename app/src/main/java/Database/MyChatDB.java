@@ -4,7 +4,6 @@ package Database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -13,11 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.Classes.ChatRoom;
-import Model.Classes.MessagePOJO;
-import Model.Classes.User;
+import Model.ResponsePOJO.MessagePOJO;
 
 public class MyChatDB extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "chatDb.db";
 
 
@@ -79,10 +77,9 @@ public class MyChatDB extends SQLiteOpenHelper {
                 COLUMN_COLOR_M + " TEXT, " +
                 COLUMN_ROOM + " TEXT, " +
                 COLUMN_UP_STANJE + " INTEGER DEFAULT 0);";
-
-        db.execSQL(queryM);
         db.execSQL(queryUser);
-        db.execSQL(queryUM);
+        db.execSQL(queryM);
+
 
     }
 
@@ -130,9 +127,10 @@ public class MyChatDB extends SQLiteOpenHelper {
                 message.setId(cursor.getString(0));
                 message.setText(cursor.getString(1));
                 message.setEmail(cursor.getString(2));
-                message.setColor(cursor.getString(3));
-                message.setRoom(cursor.getString(4));
-                message.setBelongsToCurrentUser(cursor.getString(5).equals("1"));
+                message.setEmail_receiver(cursor.getString(3));
+                message.setColor(cursor.getString(4));
+                message.setRoom(cursor.getString(5));
+                message.setBelongsToCurrentUser(cursor.getString(6).equals("1"));
                 // Adding contact to list
                 listMessagov.add(message);
             } while (cursor.moveToNext());

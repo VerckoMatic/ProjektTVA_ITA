@@ -35,7 +35,7 @@ public class ForgotPassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
         mSubscriptions = new CompositeSubscription();
-
+        getSupportActionBar().hide();
         email = (EditText) findViewById(R.id.et_emailFP);
         token = (EditText) findViewById(R.id.et_token);
         newPassword = (EditText) findViewById(R.id.et_newPassword);

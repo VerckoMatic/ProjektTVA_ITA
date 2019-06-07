@@ -25,7 +25,6 @@ public class ExampleUnitTest {
         //id, email, provider, images, password, rating
         User user = new User();
         user.setFullName("Vercko");
-        user.setLastName("Vercko");
         user.setEmail("matic.vercko@random.com");
         user.setImage("images.png");
         user.setPassword("password123");
@@ -42,13 +41,11 @@ public class ExampleUnitTest {
         item.setTitle("Assassin's creed");
         item.setPlatform("PS4");
         item.setPrice(32.22);
-        item.setShipping("Osebni prevzem");
         item.setDescription("Brand new item.");
         item.setImages("images.png");
 
         item.setPrice(35);
 
-        item.setShipping("Osebni prevzem");
 
         assertEquals(item.getPrice(), 35, 0);
     }

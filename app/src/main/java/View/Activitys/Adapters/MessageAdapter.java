@@ -16,7 +16,7 @@ import com.example.matic.projekttva.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.Classes.MessagePOJO;
+import Model.ResponsePOJO.MessagePOJO;
 
 public class MessageAdapter extends BaseAdapter{
     List<MessagePOJO> messages = new ArrayList<MessagePOJO>();
@@ -57,12 +57,12 @@ public class MessageAdapter extends BaseAdapter{
         MessagePOJO message = messages.get(i);
 
         if (message.isBelongsToCurrentUser() && message.getEmail().equals(uporabnikPrenos)) {
-            convertView = messageInflater.inflate(R.layout.moje_sporocilo, null);
+            convertView = messageInflater.inflate(R.layout.my_message, null);
             holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
             convertView.setTag(holder);
             holder.messageBody.setText(message.getText());
         } else {
-            convertView = messageInflater.inflate(R.layout.prihajajoce_sporocilo, null);
+            convertView = messageInflater.inflate(R.layout.incomming_message, null);
             holder.avatar = (View) convertView.findViewById(R.id.avatar);
             holder.name = (TextView) convertView.findViewById(R.id.name);
             holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);

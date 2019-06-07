@@ -1,4 +1,4 @@
-package Model.Classes;
+package Model.ResponsePOJO;
 
 
 public class MessagePOJO {

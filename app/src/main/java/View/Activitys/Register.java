@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.matic.projekttva.R;
@@ -35,12 +36,21 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         mSubscriptions = new CompositeSubscription();
+        getSupportActionBar().hide();
         EditText name = (EditText) findViewById(R.id.et_name);
         EditText email = (EditText) findViewById(R.id.et_email);
         EditText password = (EditText) findViewById(R.id.et_password);
         final EditText confirmPassword = (EditText) findViewById(R.id.et_confirmPassword);
         final Button confirmButton = (Button) findViewById(R.id.button_register);
+        TextView tw_login = (TextView) findViewById(R.id.tw_login);
 
+        tw_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
+            }
+        });
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override

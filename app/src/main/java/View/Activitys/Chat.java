@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Random;
 
 import Database.MyChatDB;
-import Model.Classes.MessagePOJO;
+import Model.ResponsePOJO.MessagePOJO;
 import View.Activitys.Adapters.MessageAdapter;
 import utils.Constants;
 
@@ -194,4 +194,3 @@ public class Chat extends AppCompatActivity implements RoomListener {
     }
 
 }
-
